@@ -167,7 +167,7 @@ code {
     padding: 2px 5px;
     border-radius: var(--border-radius-sm);
     color: var(--code-text);
-    white-space: nowrap; /* Prevent inline code from wrapping */
+    white-space: pre-wrap; /* Prevent inline code from wrapping */
 }
 
 /* List styling */
@@ -203,7 +203,7 @@ code {
 }
 
 #menu-toggle:hover {
-    transform: scale(1.1);
+    transform: scale(1.2);
 }
 
 .hamburger-icon {
@@ -212,18 +212,19 @@ code {
     height: 3px;
     background-color: var(--accent-color); /* Orange lines */
     border-radius: 2px;
+    z-index: 1005;
     transition: all var(--transition-speed);
 }
 
 /* Animation for opening/closing hamburger */
 #menu-toggle.open .hamburger-icon:nth-child(1) {
-    transform: translateY(8px) rotate(45deg);
+    transform: translateY(4px) rotate(45deg);
 }
 #menu-toggle.open .hamburger-icon:nth-child(2) {
     opacity: 0;
 }
 #menu-toggle.open .hamburger-icon:nth-child(3) {
-    transform: translateY(-8px) rotate(-45deg);
+    transform: translateY(-4px) rotate(-45deg);
 }
 
 
