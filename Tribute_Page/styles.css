@@ -1,0 +1,326 @@
+/* Importing a modern font from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Open+Sans:wght@300;400;600&display=swap');
+
+/* Universal box-sizing for consistent layout */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+:root {
+    /* Define CSS variables for easier theming and consistency */
+    --primary-color: #2c3e50; /* Dark blue-grey for main text and accents */
+    --secondary-color: #34495e; /* Slightly darker for headings */
+    --accent-color: #27ae60; /* Green for links and highlights (Green Revolution theme) */
+    --background-light: #ecf0f1; /* Light grey background */
+    --background-dark: #bdc3c7; /* Slightly darker grey for subtle gradients */
+    --card-background: #ffffff; /* White for content cards */
+    --text-color-light: #7f8c8d; /* Lighter text for captions/quotes */
+    --shadow-light: rgba(0, 0, 0, 0.1);
+    --shadow-heavy: rgba(0, 0, 0, 0.2);
+    --border-radius-sm: 5px;
+    --border-radius-md: 10px;
+    --transition-speed: 0.3s ease-in-out;
+
+    /* Font families */
+    --heading-font: 'Merriweather', serif;
+    --body-font: 'Open Sans', sans-serif;
+}
+
+body {
+    font-family: var(--body-font);
+    background: linear-gradient(to bottom right, var(--background-light), var(--background-dark));
+    color: var(--primary-color);
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column; /* Stack main and footer vertically */
+    align-items: center; /* Center content horizontally */
+    min-height: 100vh; /* Ensure body takes full viewport height */
+    line-height: 1.6; /* Improved readability */
+}
+
+#main {
+    max-width: 900px; /* Increased max-width for more content space */
+    width: 100%;
+    margin: 30px auto; /* More vertical margin */
+    padding: 40px; /* Generous padding inside the main container */
+    background-color: var(--card-background);
+    border-radius: var(--border-radius-md);
+    box-shadow: 0 15px 30px var(--shadow-heavy); /* More pronounced shadow */
+    text-align: center; /* Center content within main */
+    flex-grow: 1; /* Allows main to take up available space */
+}
+
+.tribute-header {
+    margin-bottom: 40px; /* More space below header */
+}
+
+#title {
+    font-family: var(--heading-font);
+    font-size: 3.5rem; /* Larger, more impactful title */
+    font-weight: 700;
+    color: var(--secondary-color);
+    margin-top: 0; /* Remove default top margin */
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px var(--shadow-light); /* Subtle text shadow */
+}
+
+.subtitle {
+    font-size: 1.4rem;
+    color: var(--text-color-light);
+    font-weight: 300;
+    margin-top: 0;
+}
+
+#img-div {
+    background-color: var(--background-light); /* Light background for the image container */
+    padding: 15px;
+    border-radius: var(--border-radius-md);
+    margin: 30px auto; /* Centered with vertical margin */
+    box-shadow: 0 5px 15px var(--shadow-light); /* Subtle shadow for image container */
+    max-width: 700px; /* Limit image container width */
+}
+
+#image {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto;
+    border-radius: var(--border-radius-sm); /* Slightly rounded corners for the image */
+    object-fit: contain; /* Changed from 'cover' to 'contain' to show the entire image */
+    /* Removed aspect-ratio: 16/9; to allow image to dictate its own height */
+}
+
+#img-caption {
+    margin-top: 15px;
+    font-size: 1rem;
+    color: var(--text-color-light);
+    font-style: italic;
+}
+
+#tribute-info {
+    margin-top: 50px; /* More space before the info section */
+    text-align: left; /* Align text to the left for better readability */
+    max-width: 750px; /* Limit width for readability */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#tribute-info h2 {
+    font-family: var(--heading-font);
+    font-size: 2rem;
+    color: var(--secondary-color);
+    margin-bottom: 20px;
+    border-bottom: 2px solid var(--accent-color); /* Underline with accent color */
+    padding-bottom: 10px;
+    display: inline-block; /* Make border-bottom only as wide as text */
+}
+
+#tribute-info h3 {
+    font-family: var(--heading-font);
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    margin-top: 30px;
+    margin-bottom: 15px;
+}
+
+#tribute-info p {
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+}
+
+#tribute-info ul {
+    list-style-type: none; /* Remove default bullet points */
+    padding: 0;
+    margin-bottom: 30px;
+}
+
+#tribute-info li {
+    margin-bottom: 10px;
+    padding-left: 25px;
+    position: relative;
+    font-size: 1.05rem;
+    color: var(--primary-color);
+}
+
+#tribute-info li::before {
+    content: '🌱'; /* Custom bullet point (leaf emoji) */
+    position: absolute;
+    left: 0;
+    color: var(--accent-color);
+    font-size: 1.2rem;
+    top: 0;
+}
+
+.quote {
+    font-family: var(--heading-font);
+    font-size: 1.3rem;
+    font-style: italic;
+    color: var(--secondary-color);
+    margin: 40px auto 10px auto;
+    padding: 20px;
+    border-left: 5px solid var(--accent-color); /* Quote style */
+    background-color: var(--background-light);
+    border-radius: var(--border-radius-sm);
+    max-width: 80%; /* Limit quote width */
+    text-align: center; /* Center quote text */
+}
+
+.quote-author {
+    font-size: 1rem;
+    color: var(--text-color-light);
+    text-align: center;
+    margin-top: -5px; /* Pull closer to quote */
+    margin-bottom: 40px;
+}
+
+#tribute-link {
+    display: inline-block;
+    background-color: var(--accent-color);
+    color: #fff;
+    padding: 15px 30px;
+    border-radius: var(--border-radius-md);
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-top: 30px;
+    transition: background-color var(--transition-speed), transform var(--transition-speed), box-shadow var(--transition-speed);
+    box-shadow: 0 5px 15px rgba(39, 174, 96, 0.3); /* Shadow for button */
+}
+
+#tribute-link:hover {
+    background-color: var(--primary-dark); /* Darker green on hover */
+    transform: translateY(-3px); /* Subtle lift effect */
+    box-shadow: 0 8px 20px rgba(39, 174, 96, 0.4);
+}
+
+footer {
+    margin-top: 40px;
+    padding: 20px;
+    color: var(--text-color-light);
+    font-size: 0.9rem;
+    text-align: center;
+    width: 100%;
+}
+
+/* --- Responsive Design --- */
+@media (max-width: 768px) {
+    body {
+        padding: 15px;
+    }
+
+    #main {
+        padding: 25px;
+        margin: 20px auto;
+    }
+
+    #title {
+        font-size: 2.8rem;
+    }
+
+    .subtitle {
+        font-size: 1.2rem;
+    }
+
+    #img-div {
+        margin: 20px auto;
+        padding: 10px;
+    }
+
+    #img-caption {
+        font-size: 0.9rem;
+    }
+
+    #tribute-info {
+        margin-top: 30px;
+        /* text-align: center; Removed this to allow list items to align left */
+    }
+
+    #tribute-info h2 {
+        font-size: 1.8rem;
+        border-bottom: none; /* Remove underline on small screens */
+        padding-bottom: 0;
+    }
+
+    #tribute-info h3 {
+        font-size: 1.3rem;
+    }
+
+    #tribute-info p {
+        font-size: 1rem;
+    }
+
+    #tribute-info ul {
+        /* Ensure ul is centered if tribute-info is centered */
+        text-align: left; /* Ensure list items align left within their container */
+        margin-left: auto; /* Center the ul itself */
+        margin-right: auto; /* Center the ul itself */
+        max-width: 90%; /* Adjust width as needed */
+    }
+
+    #tribute-info li {
+        padding-left: 25px; /* Re-add padding to create space for the emoji */
+        text-align: left; /* Ensure list items text is left-aligned */
+        position: relative; /* Keep position relative for absolute pseudo-element */
+        margin-left: 0; /* Remove previous indent */
+    }
+
+    #tribute-info li::before {
+        left: 0; /* Align emoji to the start of the padding */
+        top: 0; /* Ensure vertical alignment */
+        transform: translateY(0.15em); /* Adjust vertically for better alignment with text */
+    }
+
+    .quote {
+        font-size: 1.1rem;
+        padding: 15px;
+        max-width: 90%;
+    }
+
+    #tribute-link {
+        padding: 12px 25px;
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 10px;
+    }
+
+    #main {
+        padding: 20px;
+        margin: 15px auto;
+    }
+
+    #title {
+        font-size: 2.2rem;
+    }
+
+    .subtitle {
+        font-size: 1rem;
+    }
+
+    #img-div {
+        margin: 15px auto;
+    }
+
+    #tribute-info h2 {
+        font-size: 1.5rem;
+    }
+
+    #tribute-info h3 {
+        font-size: 1.2rem;
+    }
+
+    #tribute-info p, #tribute-info li, .quote, .quote-author {
+        font-size: 0.95rem;
+    }
+
+    #tribute-link {
+        padding: 10px 20px;
+        font-size: 0.95rem;
+    }
+}
