@@ -1,0 +1,271 @@
+/* Importing modern font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+/* Universal box-sizing for consistent layout */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  /* Define CSS variables for easier theming and consistency */
+  --primary-color: #4CAF50; /* A fresh green for accents */
+  --primary-dark: #388E3C;
+  --secondary-color: #607D8B; /* A slate grey for secondary elements */
+  --background-light: #f4f7f6;
+  --background-dark: #e0e4e3;
+  --text-color: #333;
+  --form-background: #ffffff;
+  --border-color: #d1d9e6; /* Lighter border for inputs */
+  --shadow-light: rgba(0, 0, 0, 0.08);
+  --shadow-heavy: rgba(0, 0, 0, 0.15);
+  --border-radius-sm: 5px;
+  --border-radius-md: 8px;
+  --transition-speed: 0.3s ease-in-out;
+}
+
+body {
+  font-family: 'Poppins', Arial, sans-serif; /* Added Arial fallback */
+  background: linear-gradient(to right, var(--background-light), var(--background-dark)); /* Subtle gradient */
+  color: var(--text-color);
+  margin: 0;
+  padding: 20px; /* Add some padding around the form */
+  display: flex; /* Use flexbox for easy centering */
+  justify-content: center;
+  align-items: center; /* Center the single child (main-content-wrapper) vertically */
+  min-height: 100vh; /* Ensure body takes full viewport height */
+}
+
+/* New wrapper to center header and form together */
+.main-content-wrapper {
+  display: flex;
+  flex-direction: column; /* Stack children vertically */
+  align-items: center; /* Center children horizontally within this wrapper */
+  width: 100%; /* Take full width of body's padding */
+  max-width: 600px; /* Limit its overall width */
+}
+
+header {
+  text-align: center;
+  margin-bottom: 30px; /* Space between header and form */
+  padding: 20px;
+  background-color: var(--primary-color); /* Use primary color for header */
+  color: #fff;
+  border-radius: var(--border-radius-md);
+  box-shadow: 0 4px 10px var(--shadow-light);
+  width: 100%; /* Occupy full width within its container (main-content-wrapper) */
+  /* Removed max-width: 600px here as .main-content-wrapper handles it */
+}
+
+h1, #title { /* Combined selector for h1 and #title */
+  font-size: 2.5rem; /* Larger, more prominent title */
+  font-weight: 600; /* Bolder font weight */
+  margin: 0 0 10px; /* Adjusted margin */
+}
+
+#description {
+  font-size: 1.1rem;
+  opacity: 0.9; /* Slightly less prominent than title */
+}
+
+form {
+  background-color: var(--form-background);
+  padding: 40px; /* Increased padding */
+  /* Removed margin: 20px 0; as main-content-wrapper handles vertical spacing */
+  border-radius: var(--border-radius-md);
+  box-shadow: 0 10px 25px var(--shadow-heavy); /* More pronounced shadow */
+  width: 100%; /* Occupy full width within its container (main-content-wrapper) */
+  /* Removed max-width: 600px here as .main-content-wrapper handles it */
+}
+
+.form-group {
+  margin-bottom: 25px; /* More space between form groups */
+}
+
+label {
+  display: block;
+  font-weight: 600; /* Bolder label text */
+  margin-bottom: 8px; /* Space between label and input */
+  color: var(--secondary-color); /* Use secondary color for labels */
+  font-size: 1rem;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="number"],
+select,
+textarea {
+  width: 100%; /* Corrected to 100% due to box-sizing: border-box */
+  padding: 12px 10px; /* More padding for better touch targets */
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-sm);
+  font-size: 1rem;
+  color: var(--text-color);
+  background-color: var(--background-light); /* Light background for inputs */
+  transition: border-color var(--transition-speed), box-shadow var(--transition-speed); /* Smooth transitions */
+}
+
+input:focus, /* Simplified selector for all input types on focus */
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--primary-color); /* Highlight border on focus */
+  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2); /* Subtle glow on focus */
+}
+
+textarea {
+  resize: vertical; /* Allow vertical resizing only */
+  min-height: 100px; /* Minimum height for textarea */
+}
+
+/* Radio & Checkbox Groups */
+.radio-group,
+.checkbox-group {
+  margin-top: 10px;
+  display: flex; /* Use flexbox for horizontal alignment */
+  flex-wrap: wrap; /* Allow wrapping on smaller screens */
+  gap: 15px; /* Space between radio/checkbox items */
+}
+
+.radio-group label,
+.checkbox-group label {
+  display: flex; /* Align checkbox/radio with its text */
+  align-items: center;
+  font-weight: 400; /* Lighter font weight for options */
+  color: var(--text-color);
+  margin-bottom: 0; /* Remove default margin */
+}
+
+input[type="radio"], /* Simplified selector */
+input[type="checkbox"] { /* Simplified selector */
+  appearance: none; /* Remove default browser styling */
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--primary-color);
+  margin-right: 8px; /* Space between input and text */
+  display: inline-flex; /* Ensure it behaves like a block for positioning content */
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+input[type="radio"] {
+  border-radius: 50%; /* Circle for radio */
+}
+
+input[type="checkbox"] {
+  border-radius: var(--border-radius-sm); /* Square for checkbox */
+}
+
+input[type="radio"]:checked::before {
+  content: '';
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: var(--primary-color);
+  display: block;
+}
+
+input[type="checkbox"]:checked::before {
+  content: '✔'; /* Checkmark for checked state */
+  color: #fff;
+  font-size: 12px;
+  background-color: var(--primary-color);
+  display: flex; /* Use flex for centering the checkmark */
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--border-radius-sm);
+}
+
+/* Submit Button */
+button[type="submit"] {
+  background-color: var(--primary-color);
+  color: #fff;
+  border: none;
+  padding: 15px 30px; /* Larger button */
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  font-size: 1.1rem; /* Larger font size */
+  font-weight: 600;
+  transition: background-color var(--transition-speed), transform var(--transition-speed); /* Add transform for subtle hover effect */
+  width: 100%; /* Full width button */
+  box-shadow: 0 4px 10px rgba(76, 175, 80, 0.3); /* Shadow for button */
+}
+
+button[type="submit"]:hover {
+  background-color: var(--primary-dark); /* Darker on hover */
+  transform: translateY(-2px); /* Subtle lift effect */
+  box-shadow: 0 6px 15px rgba(76, 175, 80, 0.4);
+}
+
+/* --- Responsive Design --- */
+@media (max-width: 768px) {
+  body {
+    padding: 15px;
+    /* align-items: flex-start; Removed, as align-items: center is better for the wrapper */
+  }
+
+  .main-content-wrapper {
+    /* No specific changes needed here, it adapts */
+  }
+
+  header {
+    margin-bottom: 25px; /* Slightly less space on smaller screens */
+    padding: 25px; /* Slightly less padding */
+  }
+
+  form {
+    padding: 25px; /* Slightly less padding */
+  }
+
+  h1, #title {
+    font-size: 2rem;
+  }
+
+  #description {
+    font-size: 1rem;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  .radio-group,
+  .checkbox-group {
+    flex-direction: column; /* Stack radio/checkbox items vertically */
+    gap: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  header {
+    padding: 20px;
+  }
+
+  form {
+    padding: 20px;
+  }
+
+  h1, #title {
+    font-size: 1.8rem;
+  }
+
+  label {
+    font-size: 0.95rem;
+  }
+
+  input,
+  select,
+  textarea,
+  button[type="submit"] {
+    font-size: 0.9rem;
+    padding: 10px;
+  }
+
+  button[type="submit"] {
+    padding: 12px 20px;
+  }
+}
