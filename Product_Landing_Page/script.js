@@ -36,6 +36,25 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // The smooth scrolling functionality has been moved to CSS for better performance.
-    // No JavaScript is needed for it anymore.
+    // Smooth scrolling for nav links (Reactivated and improved)
+    document.querySelectorAll('#nav-bar a.nav-link').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            const targetId = this.getAttribute('href');
+            const targetElement = document.querySelector(targetId);
+
+            if (targetElement) {
+                // Calculate offset to account for fixed header
+                const headerOffset = document.getElementById('header').offsetHeight;
+                const elementPosition = targetElement.getBoundingClientRect().top + window.pageYOffset;
+                const offsetPosition = elementPosition - headerOffset;
+
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: "smooth"
+                });
+            }
+        });
+    });
 });

@@ -1,16 +1,17 @@
+/* Importing modern fonts */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Open+Sans:wght@300;400;600&display=swap');
+
 /* Universal box-sizing for consistent layout */
-*,
-*::before,
-*::after {
+* {
     box-sizing: border-box;
 }
 
 :root {
     /* Day Theme Variables */
-    --bg-primary-day: #f8f9fa;
-    --bg-secondary-day: #ffffff;
-    --text-primary-day: #212529;
-    --text-secondary-day: #6c757d;
+    --bg-primary-day: #f8f9fa; /* Lightest gray for overall background */
+    --bg-secondary-day: #ffffff; /* White for header/footer and elements */
+    --text-primary-day: #212529; /* Dark text for main content */
+    --text-secondary-day: #6c757d; /* Lighter text for paragraphs/placeholders */
     --accent-day: #F9A825; /* Vibrant Orange/Yellow */
     --accent-light-day: #FFF8E1; /* Light Yellow */
     --btn-primary-bg-day: #F9A825; /* Vibrant Orange/Yellow */
@@ -20,16 +21,16 @@
     --shadow-day: rgba(0, 0, 0, 0.1);
 
     /* Night Theme Variables (Updated to complement orange) */
-    --bg-primary-night: #212529;
-    --bg-secondary-night: #343a40;
-    --text-primary-night: #e9ecef;
-    --text-secondary-night: #adb5bd;
+    --bg-primary-night: #212529; /* Dark charcoal */
+    --bg-secondary-night: #343a40; /* Slightly lighter charcoal */
+    --text-primary-night: #e9ecef; /* Light gray for main text */
+    --text-secondary-night: #adb5bd; /* Lighter gray for paragraphs/placeholders */
     --accent-night: #FFC107; /* Amber for night theme */
-    --accent-light-night: #4d3c0a;
+    --accent-light-night: #4d3c0a; /* Darker amber for shadows/focus */
     --btn-primary-bg-night: #FFC107; /* Amber */
-    --btn-primary-text-night: #212529;
-    --card-bg-night: #2c3034;
-    --border-color-night: #495057;
+    --btn-primary-text-night: #212529; /* Dark text for better contrast */
+    --card-bg-night: #2c3034; /* Darker card background */
+    --border-color-night: #495057; /* Darker border */
     --shadow-night: rgba(0, 0, 0, 0.3);
 
     /* General Variables */
@@ -86,22 +87,81 @@ body.dark-theme #contact h2 {
     color: var(--text-primary-night);
 }
 
-body.dark-theme .feature-item,
+/* Fix: Text not visible in dark mode in Core Features section */
+body.dark-theme .feature-item {
+    background-color: var(--card-bg-night);
+    box-shadow: 0 5px 15px var(--shadow-night);
+    border: 1px solid var(--border-color-night);
+}
+
+body.dark-theme .feature-item i {
+    color: var(--accent-night); /* Icons color */
+}
+
+body.dark-theme .feature-item h3 {
+    color: var(--text-primary-night); /* Ensure headings are visible */
+}
+
+body.dark-theme .feature-item p {
+    color: var(--text-secondary-night); /* Ensure paragraph text is visible */
+}
+
+/* Fix: Video section background in dark mode */
+body.dark-theme #how-it-works {
+    background-color: var(--bg-secondary-night);
+}
+
+/* Fix: Contact section background and form elements in dark mode */
+body.dark-theme #contact {
+    background-color: var(--bg-primary-night); /* Background for the section itself */
+}
+
+body.dark-theme #contact-form {
+    background-color: var(--card-bg-night); /* Form card background */
+    box-shadow: 0 5px 15px var(--shadow-night);
+    border: 1px solid var(--border-color-night);
+}
+
+body.dark-theme #contact-form label {
+    color: var(--text-primary-night); /* Labels in contact form */
+}
+
+body.dark-theme #contact-form input[type="text"],
+body.dark-theme #contact-form input[type="email"],
+body.dark-theme #contact-form textarea {
+    background-color: var(--bg-secondary-night); /* Input backgrounds */
+    border-color: var(--border-color-night); /* Input borders */
+    color: var(--text-primary-night); /* Input text */
+}
+
+body.dark-theme #contact-form input::placeholder,
+body.dark-theme #contact-form textarea::placeholder {
+    color: var(--text-secondary-night); /* Input placeholders */
+}
+
 body.dark-theme .pricing-tier {
     background-color: var(--card-bg-night);
     box-shadow: 0 5px 15px var(--shadow-night);
     border: 1px solid var(--border-color-night);
 }
 
-body.dark-theme .feature-item i,
 body.dark-theme .pricing-tier h3,
 body.dark-theme .pricing-tier h4 {
-    color: var(--accent-night);
+    color: var(--text-primary-night); /* Ensure pricing tier headings are visible */
 }
 
 body.dark-theme .pricing-tier ul li {
-    color: var(--text-secondary-night);
+    color: var(--text-secondary-night); /* Ensure pricing tier list items are visible */
 }
+
+body.dark-theme .pricing-tier ul li::before {
+    color: var(--accent-night); /* Ensure pricing tier checkmarks are visible */
+}
+
+body.dark-theme .featured-tier {
+    border: 3px solid var(--accent-night); /* Highlight featured tier in dark mode */
+}
+
 
 body.dark-theme .btn-primary {
     background-color: var(--btn-primary-bg-night);
@@ -112,19 +172,20 @@ body.dark-theme .btn-primary:hover {
     filter: brightness(90%);
 }
 
-body.dark-theme #email,
-body.dark-theme #contact-form input[type="text"],
-body.dark-theme #contact-form input[type="email"],
-body.dark-theme #contact-form textarea {
-    background-color: var(--bg-secondary-night);
-    border-color: var(--border-color-night);
-    color: var(--text-primary-night);
+/* Fix: Hero form styling */
+body.dark-theme #form {
+    background-color: var(--card-bg-night); /* Form background */
+    box-shadow: 0 5px 15px var(--shadow-night);
 }
 
-body.dark-theme #email::placeholder,
-body.dark-theme #contact-form input::placeholder,
-body.dark-theme #contact-form textarea::placeholder {
-    color: var(--text-secondary-night);
+body.dark-theme #email {
+    background-color: var(--bg-secondary-night); /* Email input background */
+    border-color: var(--border-color-night); /* Email input border */
+    color: var(--text-primary-night); /* Email input text */
+}
+
+body.dark-theme #email::placeholder {
+    color: var(--text-secondary-night); /* Email input placeholder */
 }
 
 body.dark-theme #theme-toggle {
@@ -203,7 +264,7 @@ body.dark-theme footer a {
     justify-content: center;
     align-items: center;
     box-shadow: 0 2px 5px var(--shadow-day);
-    transition: background-color var(--transition-speed), color var(--transition-speed), transform var(--transition-speed);
+    transition: background-color var(--transition-speed), color var(--transition-speed), transform var(--transition-speed), box-shadow var(--transition-speed);
 }
 
 #theme-toggle:hover {
@@ -285,10 +346,11 @@ section h2::after {
     gap: 15px;
     width: 100%;
     max-width: 500px;
-    background-color: rgba(255,255,255,0.9);
+    background-color: var(--card-bg-day); /* Use theme variable */
     padding: 30px;
     border-radius: var(--border-radius-md);
     box-shadow: 0 5px 15px var(--shadow-day);
+    transition: background-color var(--transition-speed), box-shadow var(--transition-speed);
 }
 
 #email {
@@ -298,10 +360,13 @@ section h2::after {
     border-radius: var(--border-radius-sm);
     font-size: 1.1rem;
     color: var(--text-primary-day);
+    background-color: var(--bg-primary-day); /* Use theme variable */
+    transition: border-color var(--transition-speed), box-shadow var(--transition-speed), background-color var(--transition-speed), color var(--transition-speed);
 }
 
 #email::placeholder {
     color: var(--text-secondary-day);
+    transition: color var(--transition-speed);
 }
 
 #email:focus {
@@ -309,6 +374,12 @@ section h2::after {
     border-color: var(--accent-day);
     box-shadow: 0 0 0 3px var(--accent-light-day);
 }
+
+#email:focus::placeholder {
+    color: var(--text-secondary-day);
+}
+
+
 
 /* Features Section */
 .features-grid {
@@ -325,7 +396,7 @@ section h2::after {
     border-radius: var(--border-radius-md);
     box-shadow: 0 5px 15px var(--shadow-day);
     text-align: center;
-    transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+    transition: transform var(--transition-speed), box-shadow var(--transition-speed), background-color var(--transition-speed), border-color var(--transition-speed);
     border: 1px solid var(--border-color-day);
 }
 
@@ -338,6 +409,7 @@ section h2::after {
     font-size: 3.5rem;
     color: var(--accent-day);
     margin-bottom: 20px;
+    transition: color var(--transition-speed);
 }
 
 .feature-item h3 {
@@ -345,16 +417,19 @@ section h2::after {
     font-size: 1.8rem;
     margin-bottom: 15px;
     color: var(--text-primary-day);
+    transition: color var(--transition-speed);
 }
 
 .feature-item p {
     font-size: 1rem;
     color: var(--text-secondary-day);
+    transition: color var(--transition-speed);
 }
 
 /* How It Works Section (Video) */
 #how-it-works {
     background-color: var(--bg-secondary-day);
+    transition: background-color var(--transition-speed);
 }
 
 .video-container {
@@ -362,11 +437,13 @@ section h2::after {
     width: 100%;
     max-width: 800px;
     margin: 0 auto;
-    padding-bottom: 56.25%;
-    height: 0;
+    /* padding-bottom: 56.25%; 16:9 Aspect Ratio */
+    padding: 10px auto;
+    height: 480px;
     overflow: hidden;
     border-radius: var(--border-radius-md);
     box-shadow: 0 5px 15px var(--shadow-day);
+    transition: box-shadow var(--transition-speed);
 }
 
 #video {
@@ -374,7 +451,7 @@ section h2::after {
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
+    height: 480px;
     border-radius: var(--border-radius-md);
 }
 
@@ -397,7 +474,7 @@ section h2::after {
     flex: 1;
     min-width: 280px;
     max-width: 350px;
-    transition: transform var(--transition-speed), box-shadow var(--transition-speed), border var(--transition-speed);
+    transition: transform var(--transition-speed), box-shadow var(--transition-speed), border-color var(--transition-speed), background-color var(--transition-speed);
     border: 1px solid var(--border-color-day);
     display: flex;
     flex-direction: column;
@@ -414,6 +491,7 @@ section h2::after {
     font-size: 2.2rem;
     margin-bottom: 15px;
     color: var(--accent-day);
+    transition: color var(--transition-speed);
 }
 
 .pricing-tier h4 {
@@ -422,6 +500,7 @@ section h2::after {
     font-weight: 700;
     margin-bottom: 30px;
     color: var(--text-primary-day);
+    transition: color var(--transition-speed);
 }
 
 .pricing-tier ul {
@@ -435,12 +514,14 @@ section h2::after {
     font-size: 1.1rem;
     margin-bottom: 10px;
     color: var(--text-secondary-day);
+    transition: color var(--transition-speed);
 }
 
 .pricing-tier ul li::before {
     content: "✔ ";
     color: var(--accent-day);
     font-weight: bold;
+    transition: color var(--transition-speed);
 }
 
 .pricing-tier .btn-primary {
@@ -452,6 +533,7 @@ section h2::after {
     border: 3px solid var(--accent-day);
     transform: scale(1.05);
     box-shadow: 0 10px 25px var(--shadow-day);
+    transition: transform var(--transition-speed), box-shadow var(--transition-speed), border-color var(--transition-speed);
 }
 
 .featured-tier:hover {
@@ -461,6 +543,7 @@ section h2::after {
 /* Contact Section */
 #contact {
     background-color: var(--bg-primary-day);
+    transition: background-color var(--transition-speed);
 }
 
 #contact-form {
@@ -475,6 +558,7 @@ section h2::after {
     border-radius: var(--border-radius-md);
     box-shadow: 0 5px 15px var(--shadow-day);
     border: 1px solid var(--border-color-day);
+    transition: background-color var(--transition-speed), box-shadow var(--transition-speed), border-color var(--transition-speed);
 }
 
 #contact-form .form-group {
@@ -487,6 +571,7 @@ section h2::after {
     margin-bottom: 8px;
     font-weight: 600;
     color: var(--text-primary-day);
+    transition: color var(--transition-speed);
 }
 
 #contact-form input[type="text"],
@@ -499,7 +584,7 @@ section h2::after {
     font-size: 1rem;
     color: var(--text-primary-day);
     background-color: var(--bg-primary-day);
-    transition: border-color var(--transition-speed), box-shadow var(--transition-speed);
+    transition: border-color var(--transition-speed), box-shadow var(--transition-speed), background-color var(--transition-speed), color var(--transition-speed);
 }
 
 #contact-form input:focus,
@@ -542,7 +627,7 @@ footer {
     text-align: center;
     font-size: 0.9rem;
     border-top: 1px solid var(--border-color-day);
-    transition: background-color var(--transition-speed), color var(--transition-speed);
+    transition: background-color var(--transition-speed), color var(--transition-speed), border-color var(--transition-speed);
 }
 
 footer p {
