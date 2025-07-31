@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eco-Smart Gadget - Future of Sustainable Living</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="styles.css">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header id="header">
+        <img id="header-img" src="logo.png" alt="Eco-Smart Logo">
+        <nav id="nav-bar">
+            <a href="#features" class="nav-link">Features</a>
+            <a href="#how-it-works" class="nav-link">How It Works</a>
+            <a href="#pricing" class="nav-link">Pricing</a>
+            <a href="#contact" class="nav-link">Contact</a>
+        </nav>
+        <button id="theme-toggle" aria-label="Toggle day/night theme">
+            <i class="fas fa-moon"></i> </button>
+    </header>
+
+    <main>
+        <section id="hero">
+            <h1>Revolutionize Your Home with Eco-Smart Gadget</h1>
+            <p>Experience unparalleled efficiency and sustainability. Live smarter, not harder.</p>
+            <form id="form" action="#">
+                <input type="email" id="email" name="email" placeholder="Enter your email for updates" required>
+                <input type="submit" id="submit" value="Get Started">
+            </form>
+        </section>
+
+        <section id="features" class="section-padding">
+            <h2>Core Features</h2>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <i class="fas fa-lightbulb icon-large"></i>
+                    <h3>Intelligent Energy Saving</h3>
+                    <p>Automatically optimizes energy consumption based on your habits and environmental data.</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-seedling icon-large"></i>
+                    <h3>Eco-Friendly Materials</h3>
+                    <p>Crafted from recycled and sustainable materials, minimizing environmental impact.</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-chart-line icon-large"></i>
+                    <h3>Real-time Analytics</h3>
+                    <p>Monitor your resource usage with intuitive dashboards and actionable insights.</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-cloud icon-large"></i>
+                    <h3>Seamless Cloud Integration</h3>
+                    <p>Control your device from anywhere, anytime, with our secure cloud platform.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="how-it-works" class="section-padding">
+            <h2>See Eco-Smart in Action</h2>
+            <div class="video-container">
+                <iframe
+                    id="video"
+                    src="https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?rel=0&controls=0&showinfo=0"
+                    frameborder="0"
+                    allowfullscreen
+                    title="Eco-Smart Gadget Demo Video"
+                ></iframe>
+            </div>
+        </section>
+
+        <section id="pricing" class="section-padding">
+            <h2>Choose Your Plan</h2>
+            <div class="pricing-grid">
+                <div class="pricing-tier">
+                    <h3>Basic</h3>
+                    <h4>$99</h4>
+                    <ul>
+                        <li>Essential Features</li>
+                        <li>Standard Analytics</li>
+                        <li>Email Support</li>
+                        <li>1-Year Warranty</li>
+                    </ul>
+                    <button class="btn-primary">Select Plan</button>
+                </div>
+                <div class="pricing-tier featured-tier">
+                    <h3>Pro</h3>
+                    <h4>$199</h4>
+                    <ul>
+                        <li>All Basic Features</li>
+                        <li>Advanced Analytics</li>
+                        <li>24/7 Priority Support</li>
+                        <li>2-Year Warranty</li>
+                        <li>Smart Home Integration</li>
+                    </ul>
+                    <button class="btn-primary">Select Plan</button>
+                </div>
+                <div class="pricing-tier">
+                    <h3>Ultimate</h3>
+                    <h4>$299</h4>
+                    <ul>
+                        <li>All Pro Features</li>
+                        <li>Customizable Reports</li>
+                        <li>Dedicated Account Manager</li>
+                        <li>5-Year Warranty</li>
+                        <li>Exclusive Beta Access</li>
+                    </ul>
+                    <button class="btn-primary">Select Plan</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="section-padding">
+            <h2>Get In Touch</h2>
+            <p>Have questions? Want to learn more about Eco-Smart Gadget?</p>
+            <form id="contact-form" action="#" method="post">
+                <div class="form-group">
+                    <label for="contact-name">Name:</label>
+                    <input type="text" id="contact-name" name="contact-name" placeholder="Your Name" required>
+                </div>
+                <div class="form-group">
+                    <label for="contact-email">Email:</label>
+                    <input type="email" id="contact-email" name="contact-email" placeholder="Your Email" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">Message:</label>
+                    <textarea id="message" name="message" placeholder="Your Message" rows="5"></textarea>
+                </div>
+                <input type="submit" class="btn-primary" value="Send Message">
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Eco-Smart Gadget. All rights reserved.</p>
+        <p><a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+    </footer>
+
+    <script src="script.js" defer></script>
+</body>
+</html>
