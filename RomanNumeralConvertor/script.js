@@ -1,56 +1,91 @@
-// script.js
-
-// Function to convert number to Roman numeral
-function convertToRoman(num) {
-  const romanNumerals = [
-    { value: 1000, numeral: 'M' },
-    { value: 900, numeral: 'CM' },
-    { value: 500, numeral: 'D' },
-    { value: 400, numeral: 'CD' },
-    { value: 100, numeral: 'C' },
-    { value: 90, numeral: 'XC' },
-    { value: 50, numeral: 'L' },
-    { value: 40, numeral: 'XL' },
-    { value: 10, numeral: 'X' },
-    { value: 9, numeral: 'IX' },
-    { value: 5, numeral: 'V' },
-    { value: 4, numeral: 'IV' },
-    { value: 1, numeral: 'I' }
-  ];
-
-  let result = '';
-  for (let i = 0; i < romanNumerals.length; i++) {
-    while (num >= romanNumerals[i].value) {
-      result += romanNumerals[i].numeral;
-      num -= romanNumerals[i].value;
-    }
-  }
-  return result;
-}
-
-// Get DOM elements
-const numberInput = document.getElementById('number');
+const numberInput = document.getElementById('number-input');
 const convertBtn = document.getElementById('convert-btn');
 const output = document.getElementById('output');
 
-// Event listener for the convert button
-convertBtn.addEventListener('click', () => {
-  const num = parseInt(numberInput.value);
+// A data-driven approach is cleaner and more scalable.
+const romanNumerals = [
+  { value: 1000, symbol: 'M' },
+  { value: 900, symbol: 'CM' },
+  { value: 500, symbol: 'D' },
+  { value: 400, symbol: 'CD' },
+  { value: 100, symbol: 'C' },
+  { value: 90, symbol: 'XC' },
+  { value: 50, symbol: 'L' },
+  { value: 40, symbol: 'XL' },
+  { value: 10, symbol: 'X' },
+  { value: 9, symbol: 'IX' },
+  { value: 5, symbol: 'V' },
+  { value: 4, symbol: 'IV' },
+  { value: 1, symbol: 'I' }
+];
 
-  // Handle invalid or empty input
-  if (isNaN(num)) {
-    output.textContent = 'Please enter a valid number';
-  } 
-  // Handle input less than 1
-  else if (num < 1) {
-    output.textContent = 'Please enter a number greater than or equal to 1';
-  } 
-  // Handle input greater than or equal to 4000
-  else if (num >= 4000) {
-    output.textContent = 'Please enter a number less than or equal to 3999';
-  } 
-  // Convert valid number to Roman numeral
-  else {
-    output.textContent = convertToRoman(num);
+/**
+ * Converts a decimal number to a Roman numeral.
+ * @param {number} num The number to convert.
+ * @returns {string} The Roman numeral representation.
+ */
+const convertToRoman = (num) => {
+  let result = '';
+  let remaining = num;
+  for (const { value, symbol } of romanNumerals) {
+    while (remaining >= value) {
+      result += symbol;
+      remaining -= value;
+    }
+  }
+  return result;
+};
+
+/**
+ * Validates user input and updates the output display.
+ */
+const updateOutput = () => {
+    const inputVal = numberInput.value;
+    
+    // Reset output styles
+    output.classList.remove('error');
+    
+    if (!inputVal) {
+        output.innerHTML = `<p class="placeholder">Enter a number to see the Roman numeral equivalent.</p>`;
+        return;
+    }
+
+    const inputInt = parseInt(inputVal, 10);
+
+    if (isNaN(inputInt)) {
+        output.classList.add('error');
+        output.innerHTML = `<p class="error-message">Please enter a valid number.</p>`;
+        return;
+    }
+
+    if (inputInt < 1) {
+        output.classList.add('error');
+        output.innerHTML = `<p class="error-message">Please enter a number greater than or equal to 1.</p>`;
+        return;
+    }
+
+    if (inputInt >= 4000) {
+        output.classList.add('error');
+        output.innerHTML = `<p class="error-message">Please enter a number less than or equal to 3999.</p>`;
+        return;
+    }
+
+    // If all checks pass, show the result
+    const romanResult = convertToRoman(inputInt);
+    output.innerHTML = `<p class="result">${romanResult}</p>`;
+};
+
+// --- Event Listeners ---
+
+// For the "Convert" button click
+convertBtn.addEventListener('click', updateOutput);
+
+// For live conversion as the user types
+numberInput.addEventListener('input', updateOutput);
+
+// For handling the "Enter" key
+numberInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    updateOutput();
   }
 });
