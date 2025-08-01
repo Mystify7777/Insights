@@ -10,6 +10,8 @@
   --light-grey: #f5f6f7;
   --dark-blue: #1b1b32;
   --orange: #f1be32;
+  --light-green: #99f6e4; /* For returned highlight */
+  --dark-green: #0f766e;
 }
 
 body {
@@ -61,6 +63,13 @@ h2 {
   border: none;
   border-radius: 2px;
   cursor: pointer;
+  transition: background-color 0.3s, opacity 0.3s;
+}
+
+.convert-btn:disabled {
+    cursor: not-allowed;
+    background-color: #a0a0a0;
+    opacity: 0.7;
 }
 
 .number-input {
@@ -106,7 +115,35 @@ h2 {
   border: 5px solid var(--orange);
   font-size: 1.2rem;
   text-align: center;
+  /* New animation properties */
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeIn 0.5s ease-out forwards;
+  transition: background-color 0.5s, color 0.5s, border-color 0.5s;
 }
+
+/* For when a frame is "returning" a value */
+.animation-frame.returned {
+    background-color: var(--light-green);
+    border-color: var(--dark-green);
+    color: var(--dark-blue);
+}
+
+/* For removing the frame from the stack */
+.animation-frame.fade-out {
+    animation: fadeOut 0.5s ease-in forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; transform: scale(1); }
+    to { opacity: 0; transform: scale(0.9); }
+}
+
 
 @media screen and (min-width: 36em) {
   body {
