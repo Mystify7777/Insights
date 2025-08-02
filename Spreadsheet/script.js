@@ -15,7 +15,7 @@ const highPrecedence = (str) => {
   return str === str2 ? str : highPrecedence(str2);
 };
 
-// --- Core Spreadsheet Functions ---
+// --- Core Spreadsheet Functions (unchanged) ---
 const isEven = (num) => num % 2 === 0;
 const sum = (nums) => nums.reduce((acc, el) => acc + el, 0);
 const average = (nums) => sum(nums) / nums.length;
@@ -53,7 +53,7 @@ const charRange = (start, end) =>
     String.fromCharCode(code)
   );
 
-// --- NEW: Formula Evaluation Engine with Error Handling ---
+// --- Formula Evaluation Engine (unchanged) ---
 const applyFunction = (str) => {
   const noHigh = highPrecedence(str);
   const infix = /([\d.]+)([+-])([\d.]+)/;
@@ -61,11 +61,9 @@ const applyFunction = (str) => {
   const functionCall = /([a-z0-9]*)\(([0-9., ]*)\)(?!.*\()/i;
   const toNumberList = (args) => args.split(",").map(parseFloat);
   const apply = (fn, args) => {
-    // Check if function exists (case-insensitive)
     if (fn.toLowerCase() in spreadsheetFunctions) {
       return spreadsheetFunctions[fn.toLowerCase()](toNumberList(args));
     }
-    // If function doesn't exist, throw a #NAME? error
     throw new Error("#NAME?");
   };
   return str2.replace(functionCall, (match, fn, args) =>
@@ -77,18 +75,15 @@ const evalFormula = (x, cells, evaluationChain) => {
   const idToText = (id) => {
     const cell = cells.find((c) => c.id === id);
     if (!cell) {
-      throw new Error("#REF!"); // Cell does not exist
+      throw new Error("#REF!");
     }
-    // Check for circular reference
     if (evaluationChain.includes(id)) {
       throw new Error("#CIRC!");
     }
     const newChain = [...evaluationChain, id];
-    // If the referenced cell has a formula, evaluate it recursively
     if (cell.dataset.formula && cell.dataset.formula.startsWith("=")) {
       return evalFormula(cell.dataset.formula.slice(1), cells, newChain);
     }
-    // Otherwise, return its plain value
     return cell.value;
   };
 
@@ -98,7 +93,6 @@ const evalFormula = (x, cells, evaluationChain) => {
   const addCharacters = (character1) => (character2) => (num) =>
     charRange(character1, character2).map(elemValue(num));
   
-  // Uppercase formula for case-insensitivity before processing
   const expandedRange = x.toUpperCase().replace(
     rangeRegex,
     (_match, char1, num1, char2, num2) =>
@@ -106,10 +100,8 @@ const evalFormula = (x, cells, evaluationChain) => {
   );
 
   const cellRegex = /[A-J][1-9][0-9]?/gi;
-  // Replace cell IDs with their actual values
   const expandedCells = expandedRange.replace(cellRegex, (match) => idToText(match));
   
-  // Apply functions and arithmetic
   const appliedFunctions = applyFunction(expandedCells);
   return appliedFunctions;
 };
@@ -120,11 +112,10 @@ window.onload = () => {
   const container = document.getElementById("container");
   const formulaBar = document.getElementById("formula-bar");
   const selectedCellLabel = document.getElementById("selected-cell-label");
-  const allCells = []; // Keep a reference to all cell inputs
+  const allCells = [];
 
   const createGrid = () => {
-    // Create header row
-    container.appendChild(document.createElement("div")); // Empty top-left
+    container.appendChild(document.createElement("div"));
     const letters = charRange("A", "J");
     letters.forEach((letter) => {
       const label = document.createElement("div");
@@ -133,7 +124,6 @@ window.onload = () => {
       container.appendChild(label);
     });
 
-    // Create numbered rows and inputs
     for (let i = 1; i <= 99; i++) {
       const rowLabel = document.createElement("div");
       rowLabel.className = "label";
@@ -146,7 +136,7 @@ window.onload = () => {
         input.dataset.formula = "";
         input.ariaLabel = letter + i;
         container.appendChild(input);
-        allCells.push(input); // Add to our cell reference array
+        allCells.push(input);
       });
     }
   };
@@ -155,67 +145,98 @@ window.onload = () => {
 
   let selectedCell;
 
+  const selectCell = (cell) => {
+    if (selectedCell) {
+      selectedCell.classList.remove("selected");
+    }
+    selectedCell = cell;
+    selectedCell.classList.add("selected");
+    selectedCellLabel.textContent = selectedCell.id;
+    formulaBar.value = selectedCell.dataset.formula || selectedCell.value;
+  };
+  
   container.addEventListener("click", (event) => {
     const target = event.target;
     if (target.tagName === "INPUT") {
-      if (selectedCell) {
-        selectedCell.classList.remove("selected");
-      }
-      selectedCell = target;
-      selectedCell.classList.add("selected");
-      selectedCellLabel.textContent = selectedCell.id;
-      formulaBar.value = selectedCell.dataset.formula || selectedCell.value;
+      selectCell(target);
       formulaBar.focus();
     }
   });
-  
-  const updateCell = (cell) => {
-      // Clear previous error styling
-      cell.classList.remove("error");
-      const rawValue = cell.dataset.formula || "";
 
-      if (rawValue.startsWith('=')) {
-          try {
-              // Start evaluation with the cell's own ID in the chain
-              const result = evalFormula(rawValue.slice(1), allCells, [cell.id]);
-              cell.value = result;
-          } catch (error) {
-              cell.value = error.message;
-              cell.classList.add("error"); // Add error styling
-          }
-      } else {
-          cell.value = rawValue;
+  // NEW: Keyboard Navigation
+  container.addEventListener("keydown", (event) => {
+    const target = event.target;
+    if (target.tagName !== "INPUT") return;
+
+    const key = event.key;
+    if (!["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(key)) {
+      return;
+    }
+
+    event.preventDefault(); // Prevent cursor movement inside input/scrolling
+
+    const [col, row] = target.id.match(/([A-J])([0-9]+)/).slice(1);
+    const rowNum = parseInt(row);
+    const colNum = col.charCodeAt(0);
+
+    let nextCellId;
+
+    if (key === "ArrowUp") {
+      nextCellId = rowNum > 1 ? col + (rowNum - 1) : null;
+    } else if (key === "ArrowDown") {
+      nextCellId = rowNum < 99 ? col + (rowNum + 1) : null;
+    } else if (key === "ArrowLeft") {
+      nextCellId = colNum > 'A'.charCodeAt(0) ? String.fromCharCode(colNum - 1) + row : null;
+    } else if (key === "ArrowRight") {
+      nextCellId = colNum < 'J'.charCodeAt(0) ? String.fromCharCode(colNum + 1) + row : null;
+    }
+
+    if (nextCellId) {
+      const nextCell = document.getElementById(nextCellId);
+      if (nextCell) {
+        selectCell(nextCell);
+        nextCell.focus();
       }
-  };
-  
-  const processFormula = () => {
-      if (!selectedCell) return;
-      
-      selectedCell.dataset.formula = formulaBar.value;
-      
-      // Update the current cell
-      updateCell(selectedCell);
-
-      // A simple way to update all other cells. Could be optimized later.
-      allCells.forEach(cell => {
-          if (cell.id !== selectedCell.id) {
-              updateCell(cell);
-          }
-      });
-  };
-
-  formulaBar.addEventListener("input", () => {
-    if (selectedCell) {
-      // Live update the cell value as formula is typed (without evaluation)
-      selectedCell.value = formulaBar.value;
     }
   });
 
-  formulaBar.addEventListener("blur", processFormula);
+  const updateCell = (cell) => {
+    cell.classList.remove("error");
+    const rawValue = cell.dataset.formula || "";
+
+    if (rawValue.startsWith('=')) {
+        try {
+            const result = evalFormula(rawValue.slice(1), allCells, [cell.id]);
+            cell.value = result;
+        } catch (error) {
+            cell.value = error.message;
+            cell.classList.add("error");
+        }
+    } else {
+        cell.value = rawValue;
+    }
+  };
+  
+  const processFormulaAndRecalculate = () => {
+    if (!selectedCell) return;
+    
+    selectedCell.dataset.formula = formulaBar.value;
+    
+    // Update all cells. This ensures any dependent cells are updated.
+    allCells.forEach(updateCell);
+  };
+
+  formulaBar.addEventListener("input", (e) => {
+    if (selectedCell) {
+      selectedCell.value = e.target.value;
+    }
+  });
+
+  formulaBar.addEventListener("blur", processFormulaAndRecalculate);
   formulaBar.addEventListener("keydown", (e) => {
       if (e.key === "Enter") {
-          e.preventDefault(); // Prevent form submission
-          processFormula();
+          e.preventDefault();
+          processFormulaAndRecalculate();
           selectedCell.focus();
       }
   });
