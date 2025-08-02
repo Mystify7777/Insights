@@ -1,7 +1,8 @@
 #container {
   display: grid;
   grid-template-columns: 50px repeat(10, 200px);
-  grid-template-rows: repeat(11, 30px);
+  /* The auto is for the header row */
+  grid-template-rows: auto repeat(99, 30px);
 }
 
 .label {
@@ -9,4 +10,31 @@
   text-align: center;
   vertical-align: middle;
   line-height: 30px;
+  font-weight: bold;
+}
+
+#formula-bar-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+#selected-cell-label {
+  font-weight: bold;
+  background-color: lightgray;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  min-width: 30px;
+  text-align: center;
+}
+
+#formula-bar {
+  flex-grow: 1;
+  padding: 0.25rem;
+}
+
+/* Class to highlight the currently selected input */
+.selected {
+  border: 2px solid #2196f3; /* A distinct blue border */
 }
