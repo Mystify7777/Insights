@@ -15,31 +15,44 @@ const highPrecedence = (str) => {
   return str === str2 ? str : highPrecedence(str2);
 };
 
-// --- Core Spreadsheet Functions (unchanged) ---
+// --- Core Spreadsheet Functions (UPDATED) ---
 const isEven = (num) => num % 2 === 0;
-const sum = (nums) => nums.reduce((acc, el) => acc + el, 0);
-const average = (nums) => sum(nums) / nums.length;
+
+// Helper to filter for numeric values from an argument list
+const numbers = nums => nums.map(parseFloat).filter(n => !isNaN(n));
+
+const sum = (nums) => numbers(nums).reduce((acc, el) => acc + el, 0);
+const average = (nums) => sum(nums) / numbers(nums).length;
 const median = (nums) => {
-  const sorted = nums.slice().sort((a, b) => a - b);
+  const sorted = numbers(nums).slice().sort((a, b) => a - b);
   const length = sorted.length;
   const middle = length / 2 - 1;
   return isEven(length)
     ? average([sorted[middle], sorted[middle + 1]])
     : sorted[Math.ceil(middle)];
 };
+
+// EXPANDED function library
 const spreadsheetFunctions = {
   sum,
   average,
   median,
-  even: (nums) => nums.filter(isEven),
-  someeven: (nums) => nums.some(isEven),
-  everyeven: (nums) => nums.every(isEven),
+  min: (nums) => Math.min(...numbers(nums)),
+  max: (nums) => Math.max(...numbers(nums)),
+  count: (nums) => numbers(nums).length,
+  concatenate: (nums) => nums.join(""),
+  upper: (nums) => String(nums[0]).toUpperCase(),
+  lower: (nums) => String(nums[0]).toLowerCase(),
+  len: (nums) => String(nums[0]).length,
+  even: (nums) => numbers(nums).filter(isEven),
+  someeven: (nums) => numbers(nums).some(isEven),
+  everyeven: (nums) => numbers(nums).every(isEven),
   firsttwo: (nums) => nums.slice(0, 2),
   lasttwo: (nums) => nums.slice(-2),
-  has2: (nums) => nums.includes(2),
-  increment: (nums) => nums.map((num) => num + 1),
-  random: ([x, y]) => Math.floor(Math.random() * y + x),
-  range: (nums) => range(...nums),
+  has2: (nums) => numbers(nums).includes(2),
+  increment: (nums) => numbers(nums).map((num) => num + 1),
+  random: (nums) => Math.floor(Math.random() * nums[1] + nums[0]),
+  range: (nums) => range(...numbers(nums)),
   nodupes: (nums) => [...new Set(nums).values()],
 };
 
@@ -53,23 +66,42 @@ const charRange = (start, end) =>
     String.fromCharCode(code)
   );
 
-// --- Formula Evaluation Engine (unchanged) ---
+// --- Formula Evaluation Engine (UPDATED) ---
+
+// NEW: Robust argument parser that handles quoted strings
+const parseArgs = (argsString) => {
+    // This regex splits by comma, but ignores commas inside double quotes
+    const regex = /(".*?"|[^",\s]+)(?=\s*,|\s*$)/g;
+    const matches = argsString.match(regex) || [];
+    return matches.map(arg => {
+        // If argument is a quoted string, remove the quotes
+        if (arg.startsWith('"') && arg.endsWith('"')) {
+            return arg.slice(1, -1);
+        }
+        return arg;
+    });
+}
+
 const applyFunction = (str) => {
   const noHigh = highPrecedence(str);
   const infix = /([\d.]+)([+-])([\d.]+)/;
   const str2 = infixEval(noHigh, infix);
-  const functionCall = /([a-z0-9]*)\(([0-9., ]*)\)(?!.*\()/i;
-  const toNumberList = (args) => args.split(",").map(parseFloat);
-  const apply = (fn, args) => {
-    if (fn.toLowerCase() in spreadsheetFunctions) {
-      return spreadsheetFunctions[fn.toLowerCase()](toNumberList(args));
+
+  // UPDATED regex to be more general
+  const functionCall = /([a-zA-Z0-9]+)\((.*)\)/;
+  const match = str2.match(functionCall);
+
+  if (match) {
+    const fnName = match[1].toLowerCase();
+    const args = parseArgs(match[2]);
+    if (fnName in spreadsheetFunctions) {
+      return spreadsheetFunctions[fnName](args);
     }
     throw new Error("#NAME?");
-  };
-  return str2.replace(functionCall, (match, fn, args) =>
-    apply(fn, args)
-  );
+  }
+  return str2;
 };
+
 
 const evalFormula = (x, cells, evaluationChain) => {
   const idToText = (id) => {
@@ -81,10 +113,12 @@ const evalFormula = (x, cells, evaluationChain) => {
       throw new Error("#CIRC!");
     }
     const newChain = [...evaluationChain, id];
-    if (cell.dataset.formula && cell.dataset.formula.startsWith("=")) {
-      return evalFormula(cell.dataset.formula.slice(1), cells, newChain);
+    const formula = cell.dataset.formula || "";
+    if (formula.startsWith("=")) {
+      return evalFormula(formula.slice(1), cells, newChain);
     }
-    return cell.value;
+    // For string values, wrap them in quotes to be parsed correctly
+    return isNaN(cell.value) ? `"${cell.value}"` : cell.value;
   };
 
   const rangeRegex = /([A-J])([1-9][0-9]?):([A-J])([1-9][0-9]?)/gi;
@@ -93,21 +127,24 @@ const evalFormula = (x, cells, evaluationChain) => {
   const addCharacters = (character1) => (character2) => (num) =>
     charRange(character1, character2).map(elemValue(num));
   
+  // Uppercase formula for case-insensitivity before processing
   const expandedRange = x.toUpperCase().replace(
     rangeRegex,
     (_match, char1, num1, char2, num2) =>
       rangeFromString(num1, num2).map(addCharacters(char1)(char2))
   );
-
+  
   const cellRegex = /[A-J][1-9][0-9]?/gi;
+  // Replace cell IDs with their actual values
   const expandedCells = expandedRange.replace(cellRegex, (match) => idToText(match));
   
+  // Apply functions and arithmetic
   const appliedFunctions = applyFunction(expandedCells);
   return appliedFunctions;
 };
 
 
-// --- Window Onload and Event Handling ---
+// --- Window Onload and Event Handling (unchanged from previous step) ---
 window.onload = () => {
   const container = document.getElementById("container");
   const formulaBar = document.getElementById("formula-bar");
@@ -163,7 +200,6 @@ window.onload = () => {
     }
   });
 
-  // NEW: Keyboard Navigation
   container.addEventListener("keydown", (event) => {
     const target = event.target;
     if (target.tagName !== "INPUT") return;
@@ -173,7 +209,7 @@ window.onload = () => {
       return;
     }
 
-    event.preventDefault(); // Prevent cursor movement inside input/scrolling
+    event.preventDefault();
 
     const [col, row] = target.id.match(/([A-J])([0-9]+)/).slice(1);
     const rowNum = parseInt(row);
@@ -222,7 +258,6 @@ window.onload = () => {
     
     selectedCell.dataset.formula = formulaBar.value;
     
-    // Update all cells. This ensures any dependent cells are updated.
     allCells.forEach(updateCell);
   };
 
