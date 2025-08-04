@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Resume Transformation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Slate & Sky -->
+    <!-- Application Structure Plan: A tab-based, single-page application design was chosen to transform the linear report into an interactive, non-linear experience. This structure allows users to freely explore different facets of the resume strategy—such as direct comparisons, strategic frameworks, and the final product—at their own pace. Key interactions include tab-based navigation to switch between content sections and a dynamic chart to visualize the impact of quantified achievements. This approach enhances usability by breaking down the dense report into digestible, self-contained, and engaging modules, making the strategic advice more accessible and memorable. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Diagnostic Analysis -> Goal: Compare -> Viz/Presentation: Side-by-side HTML text blocks -> Interaction: Tab navigation -> Justification: Directly visualizes the "before and after" improvements for immediate impact. -> Library/Method: HTML/Tailwind.
+        - Report Info: Quantifiable Metrics -> Goal: Inform/Compare -> Viz/Presentation: Bar Chart -> Interaction: Animated on load -> Justification: Transforms the abstract concept of "quantifying results" into a concrete, memorable data visualization, showing the power of metrics. -> Library/Method: Chart.js.
+        - Report Info: STAR-C-Q Method -> Goal: Organize/Inform -> Viz/Presentation: Styled HTML diagram -> Interaction: Static display -> Justification: Creates a clear, scannable visual model of the framework, making it easier to understand and apply than plain text. -> Library/Method: HTML/Tailwind.
+        - Report Info: Re-Engineered Resume -> Goal: Inform -> Viz/Presentation: Formatted HTML document -> Interaction: Static display -> Justification: Presents the final output in a clean, professional format that mimics the actual deliverable. -> Library/Method: HTML/Tailwind.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+        }
+        .tab-active {
+            border-color: #0ea5e9; /* sky-500 */
+            color: #0ea5e9; /* sky-500 */
+            background-color: #f0f9ff; /* sky-50 */
+        }
+        .tab-inactive {
+            border-color: transparent;
+            color: #475569; /* slate-600 */
+        }
+        .content-section {
+            display: none;
+        }
+        .content-active {
+            display: block;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <div class="container mx-auto p-4 md:p-8">
+        
+        <header class="text-center mb-8 md:mb-12">
+            <h1 class="text-3xl md:text-4xl font-bold text-slate-900">Strategic Resume Transformation</h1>
+            <p class="mt-2 text-lg text-slate-600">From an 'Aspirant' to a High-Impact 'Asset'</p>
+        </header>
+
+        <div class="bg-white rounded-2xl shadow-lg p-4 sm:p-6 lg:p-8">
+            
+            <!-- Navigation Tabs -->
+            <div class="mb-6 border-b border-slate-200">
+                <nav class="-mb-px flex flex-wrap gap-x-4 gap-y-2" aria-label="Tabs">
+                    <button class="nav-tab tab-active" data-tab="diagnostic">Diagnostic</button>
+                    <button class="nav-tab tab-inactive" data-tab="framework">Impact Framework</button>
+                    <button class="nav-tab tab-inactive" data-tab="resume">The Re-Engineered Resume</button>
+                    <button class="nav-tab tab-inactive" data-tab="strategy">Beyond the Resume</button>
+                </nav>
+            </div>
+
+            <!-- Content Sections -->
+            <main>
+                <!-- Diagnostic Section -->
+                <section id="diagnostic" class="content-section content-active">
+                    <div class="prose max-w-none prose-slate">
+                        <h2 class="text-2xl font-semibold text-slate-800">Diagnostic Analysis: Before & After</h2>
+                        <p class="text-slate-600">The first step is understanding the gap between a standard resume and a high-impact one. The original version contained passive language and missed key opportunities. The re-engineered version is active, quantified, and strategically positioned.</p>
+                    </div>
+                    <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-slate-50 rounded-lg p-4 border border-slate-200">
+                            <h3 class="font-bold text-lg text-red-600 mb-2">BEFORE: Original Summary</h3>
+                            <p class="text-sm text-slate-700 italic">"Aspiring Web Developer with a strong foundation in web technologies and software development. Currently pursuing B.Tech in Computer Science and Engineering. Quick learner passionate about creating user-friendly, responsive websites."</p>
+                        </div>
+                        <div class="bg-sky-50 rounded-lg p-4 border border-sky-200">
+                            <h3 class="font-bold text-lg text-sky-600 mb-2">AFTER: Re-Engineered Summary</h3>
+                            <p class="text-sm text-slate-700">"Results-driven Computer Science student and <strong>Smart India Hackathon 2024 Finalist</strong> with demonstrated experience in full-stack web development using the MERN stack. Proven ability to deliver robust, user-centric applications..."</p>
+                        </div>
+                         <div class="bg-slate-50 rounded-lg p-4 border border-slate-200">
+                            <h3 class="font-bold text-lg text-red-600 mb-2">BEFORE: Vague Project Description</h3>
+                            <p class="text-sm text-slate-700 italic">"**Weather App** Developed a dynamic web app fetching real-time weather data via API, demonstrating your practical use of APIs and front-end development skills."</p>
+                        </div>
+                        <div class="bg-sky-50 rounded-lg p-4 border border-sky-200">
+                            <h3 class="font-bold text-lg text-sky-600 mb-2">AFTER: Impactful Project Description</h3>
+                            <p class="text-sm text-slate-700">"**Real-Time Weather Dashboard:** Implemented asynchronous JavaScript (async/await) to manage API requests and responses efficiently, preventing UI blocking and improving perceived application performance."</p>
+                        </div>
+                    </div>
+                    <div class="prose max-w-none prose-slate mt-8">
+                        <h3 class="text-xl font-semibold text-slate-800">The Power of Quantified Achievements</h3>
+                        <p class="text-slate-600">One of the most critical upgrades is adding metrics. Vague claims become concrete evidence of your impact. This chart visualizes the difference between simply stating a task was done and showing its measured success, a key concept from the report.</p>
+                    </div>
+                     <div class="mt-6">
+                        <div class="chart-container">
+                            <canvas id="quantificationChart"></canvas>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Framework Section -->
+                <section id="framework" class="content-section">
+                    <div class="prose max-w-none prose-slate">
+                        <h2 class="text-2xl font-semibold text-slate-800">The STAR-C-Q Method</h2>
+                        <p class="text-slate-600">Each bullet point on your resume should be a miniature case study. The STAR-C-Q method is a framework for engineering impactful descriptions that prove your value, moving beyond a simple list of duties.</p>
+                    </div>
+                    <div class="mt-6 space-y-4">
+                        <div class="grid grid-cols-12 gap-4 items-center">
+                            <div class="col-span-2 text-center">
+                                <span class="flex items-center justify-center w-12 h-12 bg-sky-100 text-sky-700 font-bold text-xl rounded-full mx-auto">S</span>
+                            </div>
+                            <div class="col-span-10">
+                                <h3 class="font-semibold text-slate-800">Situation</h3>
+                                <p class="text-slate-600 text-sm">Briefly establish the context. What was the problem or project environment?</p>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-12 gap-4 items-center">
+                            <div class="col-span-2 text-center">
+                                <span class="flex items-center justify-center w-12 h-12 bg-sky-100 text-sky-700 font-bold text-xl rounded-full mx-auto">T</span>
+                            </div>
+                            <div class="col-span-10">
+                                <h3 class="font-semibold text-slate-800">Task</h3>
+                                <p class="text-slate-600 text-sm">What was the specific objective or goal assigned to you or your team?</p>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-12 gap-4 items-center">
+                            <div class="col-span-2 text-center">
+                                <span class="flex items-center justify-center w-12 h-12 bg-sky-100 text-sky-700 font-bold text-xl rounded-full mx-auto">A</span>
+                            </div>
+                            <div class="col-span-10">
+                                <h3 class="font-semibold text-slate-800">Action</h3>
+                                <p class="text-slate-600 text-sm">Describe the specific actions *you* took, using strong, technical verbs (e.g., Engineered, Architected, Optimized).</p>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-12 gap-4 items-center">
+                            <div class="col-span-2 text-center">
+                                <span class="flex items-center justify-center w-12 h-12 bg-sky-100 text-sky-700 font-bold text-xl rounded-full mx-auto">R</span>
+                            </div>
+                            <div class="col-span-10">
+                                <h3 class="font-semibold text-slate-800">Result</h3>
+                                <p class="text-slate-600 text-sm">What was the functional outcome of your action?</p>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-12 gap-4 items-center">
+                            <div class="col-span-2 text-center">
+                                <span class="flex items-center justify-center w-12 h-12 bg-sky-100 text-sky-700 font-bold text-xl rounded-full mx-auto">C</span>
+                            </div>
+                            <div class="col-span-10">
+                                <h3 class="font-semibold text-slate-800">Context (Technical)</h3>
+                                <p class="text-slate-600 text-sm">What tools, languages, or frameworks did you use? Weave the tech stack into your description.</p>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-12 gap-4 items-center">
+                            <div class="col-span-2 text-center">
+                                <span class="flex items-center justify-center w-12 h-12 bg-sky-100 text-sky-700 font-bold text-xl rounded-full mx-auto">Q</span>
+                            </div>
+                            <div class="col-span-10">
+                                <h3 class="font-semibold text-slate-800">Quantification</h3>
+                                <p class="text-slate-600 text-sm">What was the measurable impact? Use numbers, percentages, or scale to provide concrete proof of your effectiveness.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Resume Section -->
+                <section id="resume" class="content-section">
+                    <div class="prose max-w-none prose-slate">
+                        <h2 class="text-2xl font-semibold text-slate-800">The Final Deliverable: High-Impact Resume</h2>
+                        <p class="text-slate-600 mb-6">This is the culmination of the strategic analysis—a clean, professional, ATS-compliant, and powerful marketing document that tells a compelling story of achievement and potential. This interactive version allows you to see the structure and content in a clear, readable format.</p>
+                    </div>
+                    <div class="bg-white border border-slate-200 rounded-lg p-6 md:p-8 text-sm">
+                        <div class="text-center border-b border-slate-200 pb-4 mb-4">
+                            <h3 class="text-2xl font-bold text-slate-900">Aryan Kumar</h3>
+                            <p class="text-slate-600">Durgapur, West Bengal | +91 7543049047 | aryan.k.dev@email.com | LinkedIn: /in/aryan-kumar-mystify7777 | GitHub: /Mystify7777</p>
+                        </div>
+
+                        <div class="mb-4">
+                            <h4 class="font-bold text-sky-700 text-sm uppercase tracking-wider mb-2">Executive Summary</h4>
+                            <p class="text-slate-700">Results-driven Computer Science student and <strong>Smart India Hackathon 2024 Finalist</strong> with demonstrated experience in full-stack web development using the MERN stack (MongoDB, Express.js, React.js, Node.js). Proven ability to deliver robust, user-centric applications, from API-driven services to dynamic e-commerce platforms. Seeking to leverage advanced problem-solving and collaborative skills to contribute to an innovative software engineering team.</p>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h4 class="font-bold text-sky-700 text-sm uppercase tracking-wider mb-2">Experience</h4>
+                            <div class="mb-3">
+                                <p class="font-semibold text-slate-800">Web Development Intern <span class="font-normal text-slate-500">| Prodigy Infotech | Remote</span></p>
+                                <ul class="list-disc list-inside text-slate-700 space-y-1 mt-1">
+                                    <li>Engineered a responsive stopwatch web application utilizing vanilla JavaScript to manage state and handle user events, implementing precise timing logic with `setInterval` and DOM manipulation.</li>
+                                    <li>Constructed a full-stack CRUD application for employee data management, building a RESTful API with Node.js and Express.js and integrating with MongoDB for persistent data storage.</li>
+                                </ul>
+                            </div>
+                             <div>
+                                <p class="font-semibold text-slate-800">Cybersecurity Mentor <span class="font-normal text-slate-500">| Cybercell, BCET | Durgapur, WB</span></p>
+                                <ul class="list-disc list-inside text-slate-700 space-y-1 mt-1">
+                                    <li>Mentor and train a cohort of over 15 junior engineering students in foundational and advanced cybersecurity concepts, including network security and ethical hacking methodologies.</li>
+                                    <li>Designed and delivered weekly hands-on workshops on practical security tools, resulting in a measured 25% increase in member participation and engagement.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <h4 class="font-bold text-sky-700 text-sm uppercase tracking-wider mb-2">Projects</h4>
+                             <div class="mb-3">
+                                <p class="font-semibold text-slate-800">Alter Dime - | <span class="italic">Smart India Hackathon 2024 Finalist</span></p>
+                                <p class="text-slate-600 text-xs italic">National finalist in India's largest hackathon, selected from thousands of teams.</p>
+                                <ul class="list-disc list-inside text-slate-700 space-y-1 mt-1">
+                                    <li>Architected a scalable front-end application using <strong>React.js</strong>, developing over 15 reusable, stateful components.</li>
+                                    <li>Engineered a secure backend server using <strong>Node.js</strong> and <strong>Express.js</strong>, creating 10+ RESTful API endpoints.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <h4 class="font-bold text-sky-700 text-sm uppercase tracking-wider mb-2">Technical Skills</h4>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-slate-700">
+                                <div><strong class="block text-slate-800">Languages:</strong> JavaScript (ES6+), HTML5, CSS3, Python</div>
+                                <div><strong class="block text-slate-800">Frontend:</strong> React.js, Responsive Design</div>
+                                <div><strong class="block text-slate-800">Backend:</strong> Node.js, Express.js</div>
+                                <div><strong class="block text-slate-800">Databases:</strong> MongoDB, MySQL</div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h4 class="font-bold text-sky-700 text-sm uppercase tracking-wider mb-2">Education</h4>
+                            <p class="font-semibold text-slate-800">B.Tech in Computer Science and Engineering <span class="font-normal text-slate-500">| Bengal College Of Engineering & Technology, Durgapur</span></p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Strategy Section -->
+                <section id="strategy" class="content-section">
+                     <div class="prose max-w-none prose-slate">
+                        <h2 class="text-2xl font-semibold text-slate-800">Extending Your Professional Brand</h2>
+                        <p class="text-slate-600">A resume is a gateway, not a destination. Its goal is to compel a recruiter to explore your digital footprint. Your LinkedIn and GitHub profiles must be curated portfolios that validate and expand upon the claims made in your resume.</p>
+                    </div>
+                    <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-slate-50 rounded-lg p-4 border border-slate-200">
+                            <h3 class="font-bold text-lg text-slate-800 mb-2">GitHub: Your Technical Portfolio</h3>
+                            <ul class="list-disc list-inside space-y-2 text-slate-700">
+                                <li><strong>Profile README:</strong> Introduce yourself and showcase your primary tech stack.</li>
+                                <li><strong>Pin Your Best Work:</strong> Feature your top 3 projects prominently.</li>
+                                <li><strong>Comprehensive Project READMEs:</strong> Each pinned project needs a live demo link, screenshots, a tech stack list, and setup instructions.</li>
+                                <li><strong>Active Contribution Graph:</strong> Show consistent engagement with coding.</li>
+                            </ul>
+                        </div>
+                        <div class="bg-slate-50 rounded-lg p-4 border border-slate-200">
+                            <h3 class="font-bold text-lg text-slate-800 mb-2">LinkedIn: Your Professional Hub</h3>
+                             <ul class="list-disc list-inside space-y-2 text-slate-700">
+                                <li><strong>Impactful Headline:</strong> Go beyond "Student." Use: `Full-Stack Web Developer | SIH 2024 Finalist | React.js, Node.js`.</li>
+                                <li><strong>Narrative "About" Section:</strong> Tell a story about your passion and key achievements.</li>
+                                <li><strong>Link to Projects:</strong> In each project description, include direct links to the live demo and GitHub repo.</li>
+                                <li><strong>Skills & Endorsements:</strong> Add your key skills and seek endorsements for social proof.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        const tabs = document.querySelectorAll('.nav-tab');
+        const contentSections = document.querySelectorAll('.content-section');
+        let quantificationChartInstance = null;
+
+        const chartData = {
+            labels: ['Club Engagement', 'Problem-Solving Scores'],
+            datasets: [{
+                label: 'Quantified Improvement (%)',
+                data: [25, 40],
+                backgroundColor: [
+                    'rgba(56, 189, 248, 0.6)', // sky-400 with opacity
+                    'rgba(14, 165, 233, 0.6)' // sky-500 with opacity
+                ],
+                borderColor: [
+                    'rgba(56, 189, 248, 1)',
+                    'rgba(14, 165, 233, 1)'
+                ],
+                borderWidth: 1
+            }]
+        };
+
+        const chartConfig = {
+            type: 'bar',
+            data: chartData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 50,
+                        title: {
+                            display: true,
+                            text: 'Percentage Improvement'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed.y !== null) {
+                                    label += context.parsed.y + '%';
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
+        function activateTab(tabId) {
+            tabs.forEach(tab => {
+                if (tab.dataset.tab === tabId) {
+                    tab.classList.replace('tab-inactive', 'tab-active');
+                } else {
+                    tab.classList.replace('tab-active', 'tab-inactive');
+                }
+            });
+
+            contentSections.forEach(section => {
+                if (section.id === tabId) {
+                    section.classList.add('content-active');
+                } else {
+                    section.classList.remove('content-active');
+                }
+            });
+
+            if (tabId === 'diagnostic') {
+                if (quantificationChartInstance) {
+                    quantificationChartInstance.destroy();
+                }
+                const ctx = document.getElementById('quantificationChart').getContext('2d');
+                quantificationChartInstance = new Chart(ctx, chartConfig);
+            }
+        }
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                activateTab(tab.dataset.tab);
+            });
+        });
+
+        // Initial load
+        document.addEventListener('DOMContentLoaded', () => {
+            activateTab('diagnostic');
+        });
+    </script>
+
+</body>
+</html>
