@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aryan Kumar - Full-Stack Developer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/feather-icons"></script>
+
+    <style>
+        /*
+        Theme inspired by "Cipherion" - dark, futuristic, and tech-focused.
+        - Font 'Orbitron' for headings for a sci-fi, tech feel.
+        - Font 'Roboto' for body text for readability.
+        - Primary background: #0a0f1e (deep, dark blue).
+        - Accent color: #00ffff (cyan/aqua) for glows and highlights.
+        - Glassmorphism effect for cards: semi-transparent background with blur.
+        */
+        body {
+            background-color: #0a0f1e;
+            color: #cbd5e1; /* slate-300 */
+            font-family: 'Roboto', sans-serif;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .text-glow {
+            color: #00ffff;
+            text-shadow: 0 0 5px #00ffff, 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 40px #00ffff;
+        }
+
+        .border-glow {
+            border-color: #00ffff;
+            box-shadow: 0 0 5px rgba(0, 255, 255, 0.5), 0 0 10px rgba(0, 255, 255, 0.3);
+        }
+
+        .glass-card {
+            background: rgba(15, 23, 42, 0.5); /* slate-900 with opacity */
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .glass-card:hover {
+            border-color: rgba(0, 255, 255, 0.5);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 255, 255, 0.1);
+        }
+        
+        .nav-link-active {
+            color: #00ffff;
+            text-shadow: 0 0 8px rgba(0, 255, 255, 0.7);
+        }
+
+        /* Typing animation */
+        .typing-cursor {
+            display: inline-block;
+            width: 8px;
+            height: 1.2em;
+            background-color: #00ffff;
+            animation: blink 1s infinite;
+            margin-left: 4px;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0f1e;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b; /* slate-800 */
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00ffff;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header & Navigation -->
+    <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#hero" class="text-2xl font-bold text-white tracking-widest">AK</a>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#about" class="nav-link text-slate-300 hover:text-cyan-400 transition">About</a>
+                <a href="#skills" class="nav-link text-slate-300 hover:text-cyan-400 transition">Skills</a>
+                <a href="#projects" class="nav-link text-slate-300 hover:text-cyan-400 transition">Projects</a>
+                <a href="#experience" class="nav-link text-slate-300 hover:text-cyan-400 transition">Experience</a>
+                <a href="#contact" class="nav-link text-slate-300 hover:text-cyan-400 transition">Contact</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden text-white">
+                <i data-feather="menu"></i>
+            </button>
+        </nav>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-slate-900/80 backdrop-blur-sm">
+            <a href="#about" class="block text-center py-3 text-slate-300 hover:bg-cyan-900/50 transition">About</a>
+            <a href="#skills" class="block text-center py-3 text-slate-300 hover:bg-cyan-900/50 transition">Skills</a>
+            <a href="#projects" class="block text-center py-3 text-slate-300 hover:bg-cyan-900/50 transition">Projects</a>
+            <a href="#experience" class="block text-center py-3 text-slate-300 hover:bg-cyan-900/50 transition">Experience</a>
+            <a href="#contact" class="block text-center py-3 text-slate-300 hover:bg-cyan-900/50 transition">Contact</a>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6">
+
+        <!-- Hero Section -->
+        <section id="hero" class="min-h-screen flex items-center justify-center text-center">
+            <div class="max-w-3xl">
+                <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight">
+                    Aryan Kumar
+                </h1>
+                <h2 class="text-2xl md:text-3xl mt-4 font-light">
+                    <span id="typing-text" class="text-glow"></span><span class="typing-cursor"></span>
+                </h2>
+                <p class="mt-6 text-slate-400 max-w-xl mx-auto">
+                    A results-driven developer and Smart India Hackathon 2024 Finalist, building robust and user-centric web applications from concept to deployment.
+                </p>
+                <div class="mt-8 flex justify-center gap-4">
+                    <a href="#projects" class="bg-cyan-500 text-slate-900 font-bold py-3 px-6 rounded-full hover:bg-cyan-400 transition-all duration-300 shadow-lg shadow-cyan-500/20">
+                        View My Work
+                    </a>
+                    <a href="mailto:aryan.k.dev@email.com" class="border-2 border-slate-600 text-slate-300 font-bold py-3 px-6 rounded-full hover:border-cyan-500 hover:text-cyan-500 transition-all duration-300">
+                        Get In Touch
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="py-20 md:py-32 scroll-mt-20">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-white">About Me</h2>
+            <div class="mt-12 grid md:grid-cols-5 gap-12 items-center">
+                <div class="md:col-span-3">
+                    <p class="text-slate-400 leading-relaxed">
+                        Hello! I'm Aryan, a Computer Science student with a deep passion for full-stack development. My journey in tech is driven by a desire to solve complex problems and create applications that are not only functional but also intuitive and efficient.
+                    </p>
+                    <p class="mt-4 text-slate-400 leading-relaxed">
+                        From architecting scalable backends with Node.js to building dynamic user interfaces with React, I thrive in environments that challenge me to learn and grow. My experience as a finalist in the **Smart India Hackathon** solidified my ability to collaborate, innovate under pressure, and deliver high-quality solutions.
+                    </p>
+                     <p class="mt-4 text-slate-400 leading-relaxed">
+                        I believe in writing clean, maintainable code and am always exploring new technologies to enhance my skill set. When I'm not coding, I enjoy contributing to open-source projects and tackling algorithmic challenges on LeetCode.
+                    </p>
+                </div>
+                <div class="md:col-span-2 flex justify-center">
+                    <div class="w-64 h-64 rounded-full border-4 border-glow bg-slate-800 flex items-center justify-center">
+                        <img src="https://placehold.co/250x250/0a0f1e/00ffff?text=AK" alt="Aryan Kumar" class="rounded-full w-full h-full object-cover">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="py-20 md:py-32 scroll-mt-20">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-white">Technical Skillset</h2>
+            <div class="mt-12 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <!-- Skill Card -->
+                <div class="glass-card p-6 text-center">
+                    <i data-feather="code" class="w-12 h-12 mx-auto text-cyan-400"></i>
+                    <h3 class="mt-4 text-xl font-bold text-white">Languages</h3>
+                    <p class="mt-2 text-slate-400">JavaScript (ES6+), Python, HTML5, CSS3</p>
+                </div>
+                <!-- Skill Card -->
+                <div class="glass-card p-6 text-center">
+                    <i data-feather="figma" class="w-12 h-12 mx-auto text-cyan-400"></i>
+                    <h3 class="mt-4 text-xl font-bold text-white">Frontend</h3>
+                    <p class="mt-2 text-slate-400">React.js, Tailwind CSS, Responsive Design</p>
+                </div>
+                <!-- Skill Card -->
+                <div class="glass-card p-6 text-center">
+                    <i data-feather="server" class="w-12 h-12 mx-auto text-cyan-400"></i>
+                    <h3 class="mt-4 text-xl font-bold text-white">Backend</h3>
+                    <p class="mt-2 text-slate-400">Node.js, Express.js</p>
+                </div>
+                <!-- Skill Card -->
+                <div class="glass-card p-6 text-center">
+                    <i data-feather="database" class="w-12 h-12 mx-auto text-cyan-400"></i>
+                    <h3 class="mt-4 text-xl font-bold text-white">Databases</h3>
+                    <p class="mt-2 text-slate-400">MongoDB, MySQL</p>
+                </div>
+                <!-- Skill Card -->
+                <div class="glass-card p-6 text-center">
+                    <i data-feather="tool" class="w-12 h-12 mx-auto text-cyan-400"></i>
+                    <h3 class="mt-4 text-xl font-bold text-white">Tools & Platforms</h3>
+                    <p class="mt-2 text-slate-400">Git, GitHub, VS Code, Postman, Docker</p>
+                </div>
+                <!-- Skill Card -->
+                <div class="glass-card p-6 text-center">
+                    <i data-feather="cpu" class="w-12 h-12 mx-auto text-cyan-400"></i>
+                    <h3 class="mt-4 text-xl font-bold text-white">Problem Solving</h3>
+                    <p class="mt-2 text-slate-400">Data Structures, Algorithms</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="py-20 md:py-32 scroll-mt-20">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-white">Featured Projects</h2>
+            <div class="mt-12 grid md:grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Project Card 1: SIH -->
+                <div class="glass-card overflow-hidden group">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start">
+                             <div>
+                                <h3 class="text-2xl font-bold text-white">Alter Dime</h3>
+                                <p class="text-cyan-400 font-semibold">Smart India Hackathon 2024 Finalist</p>
+                            </div>
+                            <div class="flex space-x-3">
+                                <a href="https://github.com/Mystify7777/AlterDime" target="_blank" class="text-slate-400 hover:text-cyan-400 transition"><i data-feather="github"></i></a>
+                            </div>
+                        </div>
+                        <p class="mt-4 text-slate-400">A full-stack MERN application developed for a national hackathon. Architected a scalable frontend with 15+ reusable React components and a secure backend with 10+ RESTful API endpoints.</p>
+                        <div class="mt-4 flex flex-wrap gap-2">
+                            <span class="bg-slate-700 text-cyan-300 text-xs font-medium px-2.5 py-1 rounded-full">React.js</span>
+                            <span class="bg-slate-700 text-cyan-300 text-xs font-medium px-2.5 py-1 rounded-full">Node.js</span>
+                            <span class="bg-slate-700 text-cyan-300 text-xs font-medium px-2.5 py-1 rounded-full">Express.js</span>
+                            <span class="bg-slate-700 text-cyan-300 text-xs font-medium px-2.5 py-1 rounded-full">MongoDB</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Project Card 2: Weather App -->
+                <div class="glass-card overflow-hidden group">
+                     <div class="p-6">
+                        <h3 class="text-2xl font-bold text-white">Real-Time Weather Dashboard</h3>
+                        <p class="mt-4 text-slate-400">A dynamic web app that fetches and displays real-time weather data from a third-party API, featuring a clean and responsive UI. Implemented asynchronous JavaScript to handle API requests efficiently.</p>
+                        <div class="mt-4 flex flex-wrap gap-2">
+                            <span class="bg-slate-700 text-cyan-300 text-xs font-medium px-2.5 py-1 rounded-full">JavaScript</span>
+                            <span class="bg-slate-700 text-cyan-300 text-xs font-medium px-2.5 py-1 rounded-full">HTML5</span>
+                            <span class="bg-slate-700 text-cyan-300 text-xs font-medium px-2.5 py-1 rounded-full">CSS3</span>
+                            <span class="bg-slate-700 text-cyan-300 text-xs font-medium px-2.5 py-1 rounded-full">REST API</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Experience Section -->
+        <section id="experience" class="py-20 md:py-32 scroll-mt-20">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-white">Professional Experience</h2>
+            <div class="mt-12 max-w-3xl mx-auto">
+                <div class="relative border-l-2 border-slate-700 pl-8 space-y-12">
+                     <!-- Timeline Item 1 -->
+                    <div class="relative">
+                        <div class="absolute -left-[42px] top-1.5 w-4 h-4 bg-cyan-500 rounded-full border-4 border-slate-800"></div>
+                        <h3 class="text-xl font-bold text-white">Web Development Lead</h3>
+                        <p class="text-slate-400">Cybercell Club, BCET | Durgapur, WB</p>
+                        <ul class="mt-2 list-disc list-inside text-slate-400 space-y-1">
+                            <li>Led the development of the official club website using React.</li>
+                            <li>Mentored a team of 5 junior members on web development fundamentals.</li>
+                        </ul>
+                    </div>
+                     <!-- Timeline Item 2 -->
+                    <div class="relative">
+                        <div class="absolute -left-[42px] top-1.5 w-4 h-4 bg-cyan-500 rounded-full border-4 border-slate-800"></div>
+                        <h3 class="text-xl font-bold text-white">Web Development Intern</h3>
+                        <p class="text-slate-400">Prodigy Infotech | Remote</p>
+                        <ul class="mt-2 list-disc list-inside text-slate-400 space-y-1">
+                            <li>Engineered a responsive stopwatch application using vanilla JavaScript.</li>
+                            <li>Constructed a full-stack CRUD application with Node.js and MongoDB.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-20 md:py-32 text-center scroll-mt-20">
+            <h2 class="text-3xl md:text-4xl font-bold text-white">Get In Touch</h2>
+            <p class="mt-4 text-slate-400 max-w-xl mx-auto">
+                I'm currently seeking new opportunities and am open to collaboration. Whether you have a question or just want to say hi, feel free to reach out.
+            </p>
+            <a href="mailto:aryan.k.dev@email.com" class="mt-8 inline-block bg-cyan-500 text-slate-900 font-bold text-lg py-4 px-8 rounded-full hover:bg-cyan-400 transition-all duration-300 shadow-lg shadow-cyan-500/20">
+                Say Hello
+            </a>
+            <div class="mt-12 flex justify-center space-x-6">
+                <a href="https://github.com/Mystify7777" target="_blank" class="text-slate-400 hover:text-cyan-400 transition"><i data-feather="github" class="w-8 h-8"></i></a>
+                <a href="https://www.linkedin.com/in/aryan-kumar-mystify7777/" target="_blank" class="text-slate-400 hover:text-cyan-400 transition"><i data-feather="linkedin" class="w-8 h-8"></i></a>
+                <a href="https://leetcode.com/u/Mystify7777/" target="_blank" class="text-slate-400 hover:text-cyan-400 transition"><i data-feather="code" class="w-8 h-8"></i></a>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="text-center py-8 border-t border-slate-800">
+        <p class="text-slate-500">Designed & Built by Aryan Kumar</p>
+    </footer>
+
+    <script>
+        // Feather Icons
+        feather.replace();
+
+        // Mobile Menu Toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Header background on scroll
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('bg-slate-900/80', 'backdrop-blur-sm', 'shadow-lg');
+            } else {
+                header.classList.remove('bg-slate-900/80', 'backdrop-blur-sm', 'shadow-lg');
+            }
+        });
+
+        // Typing effect
+        const typingText = document.getElementById('typing-text');
+        const roles = ["Full-Stack Developer", "Problem Solver", "SIH Finalist"];
+        let roleIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+
+        function type() {
+            const currentRole = roles[roleIndex];
+            if (isDeleting) {
+                typingText.textContent = currentRole.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                typingText.textContent = currentRole.substring(0, charIndex + 1);
+                charIndex++;
+            }
+
+            if (!isDeleting && charIndex === currentRole.length) {
+                setTimeout(() => isDeleting = true, 2000);
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                roleIndex = (roleIndex + 1) % roles.length;
+            }
+
+            const typeSpeed = isDeleting ? 100 : 150;
+            setTimeout(type, typeSpeed);
+        }
+        
+        document.addEventListener('DOMContentLoaded', type);
+
+        // Active Nav Link on Scroll
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 60) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('nav-link-active');
+                if (link.getAttribute('href').includes(current)) {
+                    link.classList.add('nav-link-active');
+                }
+            });
+        });
+
+    </script>
+</body>
+</html>
