@@ -1,0 +1,88 @@
+#cash {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  font-size: 16px;
+}
+
+#purchase-btn {
+  padding: 10px;
+  font-size: 16px;
+  width: 100%;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
+#change-due {
+  margin-top: 20px;
+  font-size: 16px;
+  color: #212529;
+  background-color: #e9ecef;
+  padding: 10px;
+  border-radius: 5px;
+}
+/* Your provided CSS styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+.container {
+    max-width: 400px;
+    width: 100%;
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+h1 {
+    text-align: center;
+    color: #343a40;
+    margin-bottom: 20px;
+}
+label {
+    display: block;
+    margin: 10px 0 5px;
+    color: #495057;
+}
+input[type="number"] {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    font-size: 16px;
+}
+button {
+    width: 100%;
+    padding: 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+button:hover {
+    background-color: #0056b3;
+}
+#change-due {
+    margin-top: 20px;
+    font-size: 16px;
+    color: #212529;
+    background-color: #e9ecef;
+    padding: 15px;
+    border-radius: 5px;
+    min-height: 50px;
+    white-space: pre-wrap; /* Allows for line breaks */
+    word-wrap: break-word;
+}
