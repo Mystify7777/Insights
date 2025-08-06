@@ -9,35 +9,23 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Source+Code+Pro:wght@400;500&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-        .receipt {
-            font-family: 'Source Code Pro', monospace;
-        }
-        /* Custom scrollbar for a cleaner look */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #1f2937; /* bg-gray-800 */
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #4b5563; /* bg-gray-600 */
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #6b7280; /* bg-gray-500 */
-        }
-        .history-log {
-            max-height: 40vh;
-            overflow-y: auto;
-        }
-        .status-open { animation: fadeIn 0.5s ease-in-out; }
-        .status-closed { animation: fadeIn 0.5s ease-in-out; }
-        .status-insufficient { animation: shake 0.5s ease-in-out; }
+        body { font-family: 'Inter', sans-serif; }
+        .receipt { font-family: 'Source Code Pro', monospace; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #1f2937; }
+        ::-webkit-scrollbar-thumb { background: #4b5563; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #6b7280; }
+        .history-log { max-height: 40vh; overflow-y: auto; }
+        .status-open, .status-closed, .status-exact { animation: fadeIn 0.5s ease-in-out; }
+        .status-insufficient, .status-error { animation: shake 0.5s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+        /* Accordion for mobile */
+        @media (max-width: 1023px) {
+            .accordion-content { display: none; }
+            details[open] .accordion-content { display: block; }
+            details summary::-webkit-details-marker { display: none; }
+        }
     </style>
 </head>
 <body class="bg-gray-900 text-white flex items-center justify-center min-h-screen p-4">
@@ -56,14 +44,13 @@
                     <label for="cash" class="block text-sm font-medium text-gray-300 mb-1">Cash Provided</label>
                     <input type="number" id="cash" placeholder="e.g., 20.00" step="0.01" class="w-full bg-gray-700 border-2 border-gray-600 rounded-lg p-3 focus:outline-none focus:border-cyan-500 transition text-lg">
                 </div>
-                <button id="purchase-btn" class="w-full bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-bold py-3 rounded-lg transition transform hover:scale-105 text-lg">
-                    Finalize Purchase
-                </button>
+                <div class="flex space-x-4">
+                    <button id="preview-btn" class="w-full bg-gray-600 hover:bg-gray-500 text-white font-bold py-3 rounded-lg transition text-lg">Preview</button>
+                    <button id="purchase-btn" class="w-full bg-cyan-500 hover:bg-cyan-600 text-gray-900 font-bold py-3 rounded-lg transition transform hover:scale-105 text-lg">Finalize</button>
+                </div>
             </div>
             <div id="new-transaction-div" class="hidden text-center">
-                 <button id="new-transaction-btn" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 rounded-lg transition transform hover:scale-105 text-lg">
-                    Start New Transaction
-                </button>
+                 <button id="new-transaction-btn" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 rounded-lg transition transform hover:scale-105 text-lg">New Transaction</button>
             </div>
         </div>
 
@@ -76,216 +63,229 @@
         </div>
 
         <!-- Right Side: Cash Drawer & History -->
-        <div class="bg-gray-800 p-6 rounded-xl shadow-2xl border border-gray-700 flex flex-col">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-2xl font-bold text-cyan-400">Cash Drawer</h2>
-                 <button id="reset-btn" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg transition text-sm">
-                    Reset All
-                </button>
-            </div>
-            <div id="cash-drawer-display" class="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-6">
-                <!-- Denominations will be dynamically inserted here -->
-            </div>
-            <hr class="border-gray-600 my-4">
-            <h2 class="text-2xl font-bold text-cyan-400 mb-4 text-center">Transaction History</h2>
-            <div id="history-summary" class="text-center mb-2 text-gray-300"></div>
-            <div id="history-log" class="history-log space-y-2 pr-2">
-                <p class="text-gray-500 text-center">No transactions yet.</p>
-            </div>
+        <div class="bg-gray-800 p-6 rounded-xl shadow-2xl border border-gray-700 flex flex-col space-y-4">
+            <details open class="lg:open">
+                <summary class="flex justify-between items-center cursor-pointer lg:cursor-default">
+                    <h2 class="text-2xl font-bold text-cyan-400">Cash Drawer</h2>
+                    <button id="reset-drawer-btn" class="bg-yellow-600 hover:bg-yellow-500 text-white font-bold py-2 px-4 rounded-lg transition text-sm">Reset Drawer</button>
+                </summary>
+                <div id="cash-drawer-display" class="accordion-content mt-4 grid grid-cols-2 sm:grid-cols-3 gap-4"></div>
+            </details>
+
+            <hr class="border-gray-600">
+
+            <details open class="lg:open">
+                 <summary class="flex justify-between items-center cursor-pointer lg:cursor-default">
+                    <h2 class="text-2xl font-bold text-cyan-400">Transaction History</h2>
+                    <button id="export-csv-btn" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-lg transition text-sm">Export CSV</button>
+                </summary>
+                <div class="accordion-content mt-4">
+                    <div id="history-summary" class="text-center mb-2 text-gray-300"></div>
+                    <div id="history-log" class="history-log space-y-2 pr-2">
+                        <p class="text-gray-500 text-center">No transactions yet.</p>
+                    </div>
+                </div>
+            </details>
+             <button id="reset-all-btn" class="w-full bg-red-600 hover:bg-red-500 text-white font-bold py-3 rounded-lg transition text-sm">Reset All Data</button>
         </div>
     </div>
 
     <script>
-        // Initial state
+        // --- INITIAL STATE & CONSTANTS ---
         const initialPrice = 19.5;
         const initialCid = [
             ["PENNY", 1.01], ["NICKEL", 2.05], ["DIME", 3.1], ["QUARTER", 4.25], ["ONE", 90],
             ["FIVE", 55], ["TEN", 20], ["TWENTY", 60], ["ONE HUNDRED", 100]
         ];
-        let price = initialPrice;
-        let cid = JSON.parse(JSON.stringify(initialCid));
-        let transactionHistory = [];
-
         const currencyValues = {
             "PENNY": 1, "NICKEL": 5, "DIME": 10, "QUARTER": 25, "ONE": 100,
             "FIVE": 500, "TEN": 1000, "TWENTY": 2000, "ONE HUNDRED": 10000
         };
+        const denominationOrder = ["PENNY", "NICKEL", "DIME", "QUARTER", "ONE", "FIVE", "TEN", "TWENTY", "ONE HUNDRED"];
 
-        // DOM Elements
+        let price = initialPrice;
+        let cid = new Map(initialCid);
+        let transactionHistory = [];
+
+        // --- DOM ELEMENTS ---
         const priceInput = document.getElementById('price');
         const cashInput = document.getElementById('cash');
         const purchaseBtn = document.getElementById('purchase-btn');
+        const previewBtn = document.getElementById('preview-btn');
         const changeDueDiv = document.getElementById('change-due');
         const cashDrawerDisplay = document.getElementById('cash-drawer-display');
-        const resetBtn = document.getElementById('reset-btn');
+        const resetDrawerBtn = document.getElementById('reset-drawer-btn');
+        const resetAllBtn = document.getElementById('reset-all-btn');
         const newTransactionBtn = document.getElementById('new-transaction-btn');
         const posTerminalDiv = document.getElementById('pos-terminal');
         const newTransactionDiv = document.getElementById('new-transaction-div');
         const historyLog = document.getElementById('history-log');
         const historySummary = document.getElementById('history-summary');
+        const exportCsvBtn = document.getElementById('export-csv-btn');
 
+        // --- CORE LOGIC ---
+        
         /**
-         * Renders the cash drawer UI based on the current cid state.
+         * Calculates change without modifying state.
+         * @returns {object} An object with status and change details.
          */
+        const calculateChangeLogic = () => {
+            const currentPrice = parseFloat(priceInput.value);
+            const cash = parseFloat(cashInput.value);
+
+            if (isNaN(currentPrice) || isNaN(cash)) {
+                return { status: "ERROR", message: "Invalid price or cash amount." };
+            }
+
+            const priceInCents = Math.round(currentPrice * 100);
+            const cashInCents = Math.round(cash * 100);
+
+            if (cashInCents < priceInCents) {
+                return { status: "ERROR", message: "Customer does not have enough money." };
+            }
+            if (cashInCents === priceInCents) {
+                return { status: "EXACT", changeGiven: 0, changeDetail: [] };
+            }
+
+            let changeDueInCents = cashInCents - priceInCents;
+            const cidInCents = new Map([...cid.entries()].map(([name, amount]) => [name, Math.round(amount * 100)]));
+            const totalCIDInCents = [...cidInCents.values()].reduce((sum, amount) => sum + amount, 0);
+
+            if (totalCIDInCents < changeDueInCents) {
+                return { status: "INSUFFICIENT_FUNDS", changeGiven: 0, changeDetail: [] };
+            }
+            
+            if (totalCIDInCents === changeDueInCents) {
+                 const changeDetail = [...cid.entries()]
+                    .filter(([, amount]) => amount > 0)
+                    .map(([name, amount]) => `${name}: $${amount.toFixed(2)}`);
+                return { status: "CLOSED", changeGiven: changeDueInCents, changeDetail, finalCid: new Map([...cid.keys()].map(key => [key, 0])) };
+            }
+
+            let changeToGive = [];
+            const tempCid = new Map(cidInCents);
+
+            for (const name of [...denominationOrder].reverse()) {
+                const unitValue = currencyValues[name];
+                let amountToReturn = 0;
+                let availableAmount = tempCid.get(name);
+
+                while (changeDueInCents >= unitValue && availableAmount > 0) {
+                    changeDueInCents -= unitValue;
+                    availableAmount -= unitValue;
+                    amountToReturn += unitValue;
+                }
+                if (amountToReturn > 0) {
+                    changeToGive.push(`${name}: $${(amountToReturn / 100).toFixed(2)}`);
+                    tempCid.set(name, availableAmount);
+                }
+            }
+
+            if (changeDueInCents > 0) {
+                return { status: "INSUFFICIENT_FUNDS", changeGiven: 0, changeDetail: [] };
+            }
+            
+            const finalCid = new Map([...tempCid.entries()].map(([name, amount]) => [name, amount / 100]));
+            return { status: "OPEN", changeGiven: cashInCents - priceInCents, changeDetail: changeToGive, finalCid };
+        };
+
+        // --- UI & DISPLAY LOGIC ---
+
         const renderDrawer = () => {
             cashDrawerDisplay.innerHTML = '';
-            [...cid].reverse().forEach(([name, amount]) => {
+            [...denominationOrder].reverse().forEach(name => {
+                const amount = cid.get(name) || 0;
                 const element = document.createElement('div');
-                element.className = 'bg-gray-700 p-3 rounded-lg text-center';
-                const isLow = amount < currencyValues[name] * 5 / 100 && name !== "ONE HUNDRED"; // Low stock alert
+                element.className = 'bg-gray-700 p-3 rounded-lg text-center space-y-2';
+                const isLow = amount < currencyValues[name] * 5 / 100 && name !== "ONE HUNDRED";
+                
+                // Stock bar logic
+                const maxAmount = (initialCid.find(item => item[0] === name) || [0, 1])[1] * 1.5; // A baseline for "full"
+                const stockPercentage = Math.min((amount / maxAmount) * 100, 100);
+                const barColor = stockPercentage < 20 ? 'bg-red-500' : stockPercentage < 50 ? 'bg-yellow-500' : 'bg-green-500';
+
                 element.innerHTML = `
                     <label for="cid-${name}" class="block text-sm font-medium ${isLow ? 'text-red-400' : 'text-gray-300'}">${name}</label>
-                    <input type="number" id="cid-${name}" value="${amount.toFixed(2)}" step="0.01" 
-                           class="w-full bg-gray-600 border border-gray-500 rounded-md p-2 mt-1 text-center focus:outline-none focus:border-cyan-400">
+                    <input type="number" id="cid-${name}" value="${amount.toFixed(2)}" step="0.01" class="w-full bg-gray-600 border border-gray-500 rounded-md p-2 text-center focus:outline-none focus:border-cyan-400">
+                    <div class="w-full bg-gray-500 rounded-full h-1.5"><div class="${barColor} h-1.5 rounded-full" style="width: ${stockPercentage}%"></div></div>
                 `;
                 cashDrawerDisplay.appendChild(element);
                 document.getElementById(`cid-${name}`).addEventListener('change', (e) => {
-                    const newAmount = parseFloat(e.target.value) || 0;
-                    const index = cid.findIndex(item => item[0] === name);
-                    if (index !== -1) cid[index][1] = newAmount;
+                    cid.set(name, parseFloat(e.target.value) || 0);
                 });
             });
         };
 
-        /**
-         * Renders the transaction history log.
-         */
         const renderHistory = () => {
+            historyLog.innerHTML = transactionHistory.length === 0 ? `<p class="text-gray-500 text-center">No transactions yet.</p>` : '';
             if (transactionHistory.length === 0) {
-                historyLog.innerHTML = `<p class="text-gray-500 text-center">No transactions yet.</p>`;
-                historySummary.innerHTML = '';
-                return;
+                 historySummary.innerHTML = '';
+                 return;
             }
-            historyLog.innerHTML = '';
             [...transactionHistory].reverse().forEach(tx => {
                 const logEntry = document.createElement('div');
-                const statusColor = tx.status.includes("INSUFFICIENT") ? 'border-red-500' : 'border-green-500';
+                const statusColor = tx.status.includes("INSUFFICIENT") || tx.status === "ERROR" ? 'border-red-500' : 'border-green-500';
                 logEntry.className = `bg-gray-700 p-2 rounded-md border-l-4 ${statusColor}`;
-                logEntry.innerHTML = `
-                    <div class="flex justify-between text-xs">
-                        <span>#${tx.id} - ${tx.status}</span>
-                        <span>Change: $${tx.changeGiven.toFixed(2)}</span>
-                    </div>
-                `;
+                logEntry.innerHTML = `<div class="flex justify-between text-xs"><span>#${tx.id} - ${tx.status}</span><span>Change: $${tx.changeGiven.toFixed(2)}</span></div>`;
                 historyLog.appendChild(logEntry);
             });
-            const totalTransactions = transactionHistory.length;
             const totalChange = transactionHistory.reduce((sum, tx) => sum + tx.changeGiven, 0);
-            historySummary.innerHTML = `Total Transactions: ${totalTransactions} | Total Change Given: $${totalChange.toFixed(2)}`;
+            historySummary.innerHTML = `Total Transactions: ${transactionHistory.length} | Total Change Given: $${totalChange.toFixed(2)}`;
         };
 
-        /**
-         * Generates a formatted receipt string.
-         */
         const generateReceipt = (status, data = {}) => {
+            const { price, cash, changeGiven, changeDetail } = data;
+            if (status === "ERROR") return data.message;
+            if (status === "EXACT") return "No change due - customer paid with exact cash.";
+            
             let output = `************************\n`;
             output += `    TRANSACTION RECEIPT\n`;
             output += `************************\n\n`;
-            output += `Item Price:      $${data.price.toFixed(2)}\n`;
-            output += `Cash Provided:   $${(data.cash / 100).toFixed(2)}\n`;
+            output += `Item Price:      $${price.toFixed(2)}\n`;
+            output += `Cash Provided:   $${(cash / 100).toFixed(2)}\n`;
             output += `------------------------\n`;
-            
-            if (status === "OPEN" || status === "CLOSED") {
-                output += `Change Due:      $${(data.changeDue / 100).toFixed(2)}\n\n`;
-                output += `--- Change Given ---\n`;
-                if (data.changeDetail.length > 0) {
-                    data.changeDetail.forEach(item => {
-                        const [name, amount] = item.split(': $');
-                        output += `${name.padEnd(16, ' ')} $${parseFloat(amount).toFixed(2)}\n`;
-                    });
-                } else {
-                     output += `(No change given)\n`;
-                }
-            }
-            output += `\nStatus: ${status}`;
+            output += `Change Due:      $${(changeGiven / 100).toFixed(2)}\n\n`;
+            output += `--- Change Given ---\n`;
+            output += (changeDetail && changeDetail.length > 0) ? changeDetail.map(item => {
+                const [name, amount] = item.split(': $');
+                return `${name.padEnd(16, ' ')} $${parseFloat(amount).toFixed(2)}`;
+            }).join('\n') : `(No change given)`;
+            output += `\n\nStatus: ${status}`;
             return output;
         };
-        
-        /**
-         * Main cash register logic.
-         */
-        const checkCashRegister = () => {
-            price = parseFloat(priceInput.value);
-            const cash = parseFloat(cashInput.value);
 
-            if (isNaN(price) || isNaN(cash)) {
-                changeDueDiv.innerHTML = `<p class="text-red-400">Invalid price or cash amount.</p>`;
-                return;
-            }
-
-            const priceInCents = Math.round(price * 100);
-            const cashInCents = Math.round(cash * 100);
-
-            if (cashInCents < priceInCents) {
-                changeDueDiv.innerHTML = `<p class="text-red-400">Customer does not have enough money.</p>`;
-                return;
-            }
-
-            if (cashInCents === priceInCents) {
-                changeDueDiv.innerHTML = `<p class="text-green-400">No change due - customer paid with exact cash.</p>`;
-                updateHistory({ status: "EXACT", changeGiven: 0 });
-                toggleTransactionUI(true);
-                return;
-            }
-
-            let changeDueInCents = cashInCents - priceInCents;
-            const originalChangeDue = changeDueInCents;
-            const cidInCents = cid.map(([name, amount]) => [name, Math.round(amount * 100)]);
-            let totalCIDInCents = cidInCents.reduce((sum, [, amount]) => sum + amount, 0);
-
-            let changeToGive = [];
-            let tempCid = JSON.parse(JSON.stringify(cidInCents));
-            const cidReversed = [...tempCid].reverse();
-            let status = "OPEN";
-
-            if (totalCIDInCents < changeDueInCents) {
-                status = "INSUFFICIENT_FUNDS";
-            } else {
-                for (let i = 0; i < cidReversed.length; i++) {
-                    let [name, availableAmount] = cidReversed[i];
-                    const unitValue = currencyValues[name];
-                    let amountToReturn = 0;
-                    while (changeDueInCents >= unitValue && availableAmount > 0) {
-                        changeDueInCents -= unitValue;
-                        availableAmount -= unitValue;
-                        amountToReturn += unitValue;
-                    }
-                    if (amountToReturn > 0) {
-                        changeToGive.push(`${name}: $${amountToReturn / 100}`);
-                    }
-                }
-
-                if (changeDueInCents > 0) {
-                    status = "INSUFFICIENT_FUNDS";
-                } else {
-                    if (totalCIDInCents === originalChangeDue) {
-                        status = "CLOSED";
-                    }
-                    // Update the main cid array only on successful transaction
-                    cid = cidInCents.map(([name, amount]) => [name, amount / 100]);
-                    for (let i = 0; i < changeToGive.length; i++) {
-                        const [name, returnedAmount] = changeToGive[i].split(': $');
-                        const cidIndex = cid.findIndex(item => item[0] === name);
-                        cid[cidIndex][1] -= parseFloat(returnedAmount);
-                    }
-                }
-            }
+        const displayResult = (result) => {
+            const { status, message } = result;
+            const statusClass = `status-${status.toLowerCase().split('_')[0]}`;
+            changeDueDiv.className = `receipt bg-gray-900/70 p-4 rounded-lg min-h-[300px] border border-gray-700 text-sm whitespace-pre-wrap ${statusClass}`;
             
-            const receiptData = { price, cash: cashInCents, changeDue: originalChangeDue, changeDetail: changeToGive };
+            const priceVal = parseFloat(priceInput.value);
+            const cashVal = parseFloat(cashInput.value);
+            const receiptData = { ...result, price: priceVal, cash: Math.round(cashVal * 100) };
+            
             changeDueDiv.textContent = generateReceipt(status, receiptData);
-            changeDueDiv.className = `receipt bg-gray-900/70 p-4 rounded-lg min-h-[300px] border border-gray-700 text-sm whitespace-pre-wrap status-${status.toLowerCase().split('_')[0]}`;
-            
-            updateHistory({ status, changeGiven: status.includes("INSUFFICIENT") ? 0 : originalChangeDue / 100 });
-            renderDrawer();
-            toggleTransactionUI(true);
+        };
+        
+        // --- EVENT HANDLERS & WORKFLOW ---
+
+        const handleTransaction = (isFinal) => {
+            const result = calculateChangeLogic();
+            displayResult(result);
+
+            if (isFinal && result.status !== "ERROR" && result.status !== "INSUFFICIENT_FUNDS") {
+                cid = result.finalCid;
+                updateHistory({ status: result.status, changeGiven: result.changeGiven / 100 });
+                renderDrawer();
+                toggleTransactionUI(true);
+            } else if (isFinal) {
+                // Log failed but finalized attempts
+                updateHistory({ status: result.status, changeGiven: 0 });
+                toggleTransactionUI(true);
+            }
         };
 
         const updateHistory = (txData) => {
-            const newTx = {
-                id: transactionHistory.length + 1,
-                ...txData
-            };
-            transactionHistory.push(newTx);
+            transactionHistory.push({ id: transactionHistory.length + 1, ...txData });
             renderHistory();
         };
 
@@ -301,22 +301,64 @@
             toggleTransactionUI(false);
         };
 
+        const resetDrawer = () => {
+             if (confirm('Are you sure you want to reset the cash drawer to its initial state?')) {
+                cid = new Map(initialCid);
+                renderDrawer();
+            }
+        };
+        
         const resetApp = () => {
-            price = initialPrice;
-            cid = JSON.parse(JSON.stringify(initialCid));
-            transactionHistory = [];
-            priceInput.value = price.toFixed(2);
-            startNewTransaction();
-            renderDrawer();
-            renderHistory();
+            if (confirm('Are you sure you want to reset all data, including history? This cannot be undone.')) {
+                price = initialPrice;
+                cid = new Map(initialCid);
+                transactionHistory = [];
+                priceInput.value = price.toFixed(2);
+                startNewTransaction();
+                renderDrawer();
+                renderHistory();
+            }
+        };
+        
+        const exportHistoryToCSV = () => {
+            if (transactionHistory.length === 0) {
+                alert("No history to export.");
+                return;
+            }
+            let csvContent = "data:text/csv;charset=utf-8,Transaction ID,Status,Change Given ($)\n";
+            transactionHistory.forEach(tx => {
+                csvContent += `${tx.id},${tx.status},${tx.changeGiven.toFixed(2)}\n`;
+            });
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "transaction_history.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         };
 
-        // Event Listeners
-        purchaseBtn.addEventListener('click', checkCashRegister);
-        resetBtn.addEventListener('click', resetApp);
+        // --- EVENT LISTENERS ---
+        previewBtn.addEventListener('click', () => handleTransaction(false));
+        purchaseBtn.addEventListener('click', () => handleTransaction(true));
+        resetDrawerBtn.addEventListener('click', resetDrawer);
+        resetAllBtn.addEventListener('click', resetApp);
         newTransactionBtn.addEventListener('click', startNewTransaction);
+        exportCsvBtn.addEventListener('click', exportHistoryToCSV);
+        
+        document.addEventListener('keydown', (e) => {
+            if (posTerminalDiv.style.display !== 'none') {
+                if (e.key === 'Enter') { e.preventDefault(); purchaseBtn.click(); }
+            }
+            if (newTransactionDiv.style.display !== 'none') {
+                 if (e.key.toLowerCase() === 'n') startNewTransaction();
+            }
+            if (e.key.toLowerCase() === 'r' && document.activeElement.tagName !== 'INPUT') {
+                resetAllBtn.click();
+            }
+        });
 
-        // Initial render
+        // --- INITIAL RENDER ---
         document.addEventListener('DOMContentLoaded', () => {
              priceInput.value = price.toFixed(2);
              renderDrawer();
