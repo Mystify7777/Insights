@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Learn Intermediate OOP by Building a Platformer Game</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="start-screen">
+      <h1 class="main-title">freeCodeCamp Code Warrior</h1>
+      <p class="instructions">
+        Help the main player navigate to the yellow checkpoints.
+      </p>
+      <p class="instructions">
+        Use the keyboard arrows to move the player around.
+      </p>
+      <p class="instructions">You can also use the spacebar to jump.</p>
+
+      <div class="btn-container">
+        <button class="btn" id="start-btn">Start Game</button>
+      </div>
+    </div>
+
+    <div class="hud" id="hud">
+      <p id="hud-state">State: Start</p>
+      <p id="hud-score">Score: 0</p>
+      <p id="hud-level">Level: 1</p>
+      <p id="hud-coins">Coins: 0/0</p>
+      <p id="hud-health">Health: 3</p>
+    </div>
+
+    <div class="game-controls" id="game-controls">
+      <button class="btn" id="pause-btn">Pause</button>
+      <button class="btn" id="restart-btn">Restart</button>
+      <button class="btn" id="mute-btn">Mute</button>
+      <label class="volume-control" for="volume-slider">Volume
+        <input id="volume-slider" type="range" min="0" max="100" value="40" />
+      </label>
+    </div>
+
+    <div class="checkpoint-screen">
+      <h2>Congrats!</h2>
+      <p>You reached the last checkpoint.</p>
+      <div class="btn-container">
+        <button class="btn" id="overlay-restart-btn">Play Again</button>
+      </div>
+    </div>
+
+    <div class="game-over-screen">
+      <h2>Game Over</h2>
+      <p id="game-over-message">You ran out of health!</p>
+      <div class="btn-container">
+        <button class="btn" id="game-over-restart-btn">Try Again</button>
+      </div>
+    </div>
+
+    <div class="mobile-controls" id="mobile-controls" aria-label="Mobile controls">
+      <button class="mobile-btn" id="mobile-left-btn" aria-label="Move left">Left</button>
+      <button class="mobile-btn mobile-jump" id="mobile-jump-btn" aria-label="Jump">Jump</button>
+      <button class="mobile-btn" id="mobile-right-btn" aria-label="Move right">Right</button>
+    </div>
+
+    <canvas id="canvas"></canvas>
+
+    <script type="module" src="./js/main.js"></script>
+  </body>
+</html>

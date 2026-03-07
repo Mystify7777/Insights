@@ -1,0 +1,49 @@
+<!-- This page will be used to log all the changes that will be performed from now on. -->
+# Day 1 07032026
+
+- Added blank var.md to keep track of all the core components.
+- Read and reviewed all project files before enhancement implementation.
+- Added game state management flow: `START`, `PLAYING`, `PAUSED`, `LEVEL_COMPLETE`.
+- Added gameplay HUD showing current state and score.
+- Added pause/resume controls via button and keyboard (`P`/`Esc`).
+- Added restart controls (in-game and post-level-complete overlay).
+- Added basic score progression (+100 per checkpoint).
+- Preserved core movement, platform collision, and checkpoint progression mechanics.
+- Added `levels/level1.json` and `levels/level2.json` for external level configuration.
+- Implemented async level loading with fallback data when JSON fetch is unavailable.
+- Added level progression flow: completing a level now advances to the next level.
+- Added HUD level indicator to show active stage.
+- Updated restart logic to reset to Level 1 with score reset.
+- Refactored runtime to ES modules under `js/`.
+- Added `js/main.js` as the application entrypoint.
+- Added `js/game.js` to encapsulate game engine logic and state.
+- Added entity modules: `js/entities/player.js`, `js/entities/platform.js`, `js/entities/checkpoint.js`.
+- Added `js/config.js` and `js/levels.js` for constants and level loading.
+- Switched `index.html` to load `./js/main.js` with `type="module"`.
+- Added collectible coin system with per-level coin data.
+- Added `js/entities/coin.js` for coin rendering and claim behavior.
+- Added coin collision detection and score bonus (`+25`) on collection.
+- Added HUD coin progress indicator (`Coins: collected/total`).
+- Added enemy system with patrol behavior and collision damage.
+- Added `js/entities/enemy.js` for enemy rendering and AI.
+- Added enemy data to `levels/level1.json` and `levels/level2.json`.
+- Added player health system (`maxHealth: 3`) with HUD health display.
+- Added invincibility frames (1 second) after taking damage.
+- Added `GAME_OVER` state and game-over screen UI.
+- Added game-over flow triggered when health reaches 0.
+- Enemies deal 1 damage per collision when player is not invincible.
+- Added moving platform system with horizontal patrol movement.
+- Added `js/entities/movingPlatform.js` for dynamic platform rendering and behavior.
+- Added moving platforms to Level 1 (2 platforms) and Level 2 (3 platforms).
+- Moving platforms support collision detection and world scrolling sync.
+- Players can ride moving platforms dynamically.
+- Added particle system for visual feedback effects.
+- Added `js/particleSystem.js` with `Particle` and `ParticleSystem` classes.
+- Particle effects trigger on coin collection (10 golden particles).
+- Particle effects trigger on checkpoint claim (15 yellow particles).
+- Particles have gravity, fade-out, and velocity variation for natural motion.
+- Added visual invincibility feedback (player flashing effect during damage cooldown).
+- Player renders with 50% opacity and flashes every 5 frames when invincible.
+- Added mobile touch controls (Left, Right, Jump) for phone/tablet support.
+- Added pointer-based hold handling for continuous movement on touch screens.
+- Added mobile control visibility rules for coarse pointer devices.
